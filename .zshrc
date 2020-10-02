@@ -101,3 +101,6 @@ alias rm='trash-put -v'
 alias ncm='sudo node ~/clones/UnblockNeteaseMusic/app.js -f 59.111.181.38 -p 80:443 &; netease-cloud-music --ignore-certificate-errors'
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
+
+alias px='HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 ALL_PROXY=http://127.0.0.1:10808'
+
