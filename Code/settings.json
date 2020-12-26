@@ -1,0 +1,35 @@
+{
+    "workbench.colorTheme": "One Dark Pro",
+    "editor.fontFamily": "'Source Code Pro', 'Source Han Mono', monospace, '思源黑体'",
+    "editor.mouseWheelZoom": true,
+    "editor.wordWrap": "on",
+    "vim.useCtrlKeys": false,
+    "workbench.sideBar.location": "left",
+    "editor.renderWhitespace": "none",
+    "editor.renderControlCharacters": true,
+    "files.autoSave": "onFocusChange",
+    "files.trimTrailingWhitespace": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.runInTerminal": true,
+    "window.titleBarStyle": "custom",
+    "files.autoGuessEncoding": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "window.zoomLevel": 1,
+    "telemetry.enableTelemetry": false,
+    "telemetry.enableCrashReporter": false,
+    "code-runner.executorMap": {
+        "c": "cd $dir && gcc -Wall -O3 $fileName -o a.ao && $dira.ao",
+        "cg": "cd $dir && gcc -Wall -g $fileName -o a.ao && gdb $dira.ao"
+    },
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.languageServer": "Microsoft",
+    "files.eol": "\n",
+    "[cpp]": {
+        "editor.defaultFormatter": "xaver.clang-format"
+    },
+    "http.proxy": "http://127.0.0.1:10808"
+}
