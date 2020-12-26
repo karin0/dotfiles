@@ -17,7 +17,8 @@ else
 fi
 
 gacp() {
-    git add . && git commit -am ">_<" && pc git push
+    LOG="$*"
+    git diff --name-only && read -n 1 && git add . && git commit -m $LOG && read -n 1 && pc git push
 }
 
 # alias rt='trash-put -v'
@@ -104,3 +105,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 alias px='HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 ALL_PROXY=http://127.0.0.1:10808'
 
+export PATH="$PATH:$(yarn global bin)"
+
+eval $(thefuck --alias)
