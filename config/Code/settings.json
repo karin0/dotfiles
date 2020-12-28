@@ -31,5 +31,11 @@
     "[cpp]": {
         "editor.defaultFormatter": "xaver.clang-format"
     },
-    "http.proxy": "http://127.0.0.1:10808"
+    "http.proxy": "http://127.0.0.1:10808",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ]
 }
