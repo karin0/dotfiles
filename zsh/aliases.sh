@@ -15,5 +15,5 @@ mkcd () {
 
 gacp() {
     LOG="$*"
-    git diff --name-only && read -n 1 && git add . && git commit -m $LOG && read -n 1 && pc git push
+    git diff --name-only && read -n 1 && git add . && git commit -m $LOG && read -n 1 && proxychains4 git push
 }
