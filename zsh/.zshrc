@@ -30,3 +30,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # export PATH="$PATH:$(yarn global bin)"
 
 source ~/dotfiles/zsh/aliases.sh
+
+if [ -f ~/aliases.sh ]; then
+    source ~/aliases.sh
+fi
