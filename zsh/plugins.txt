@@ -11,5 +11,5 @@ robbyrussell/oh-my-zsh path:plugins/common-aliases
 zsh-users/zsh-syntax-highlighting
 # zsh-users/zsh-history-substring-search
 
-skywind3000/z.lua
+# skywind3000/z.lua
 denysdovhan/spaceship-prompt
