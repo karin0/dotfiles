@@ -34,3 +34,6 @@ source ~/dotfiles/zsh/aliases.sh
 if [ -f ~/aliases.sh ]; then
     source ~/aliases.sh
 fi
+
+export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
+
