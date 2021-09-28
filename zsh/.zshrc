@@ -38,7 +38,7 @@ bindkey -M isearch . self-insert
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
-source ~/dotfiles/zsh/aliases.zsh
+source ~/dotfiles/zsh/aliases.sh
 if [ -f ~/aliases.sh ]; then
     source ~/aliases.sh
 fi
@@ -96,4 +96,4 @@ enpx
 # # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/dotfiles/zsh/spaceship.zsh
+source ~/dotfiles/zsh/spaceship.sh
