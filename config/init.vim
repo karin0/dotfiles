@@ -23,6 +23,7 @@ Plug 'scrooloose/nerdcommenter'
 " Plug 'jacoborus/tender.vim'
 " colorscheme tender
 Plug 'rakr/vim-one'
+
 " colorscheme one
 Plug 'drewtempelmeyer/palenight.vim'
 " colorscheme palenight
@@ -162,6 +163,7 @@ if filereadable(expand("~/.vimrc_background"))
     let base16colorspace=256
     source ~/.vimrc_background
 endif
+
 hi Normal guibg=NONE ctermbg=NONE
 hi Comment ctermfg=4 guifg=4
 hi vimComment ctermfg=4 guifg=4

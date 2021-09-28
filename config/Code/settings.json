@@ -2,7 +2,7 @@
     "workbench.colorTheme": "One Dark Pro",
     "editor.fontFamily": "'Source Code Pro', 'Source Han Mono', monospace, '思源黑体'",
     "editor.mouseWheelZoom": true,
-    "editor.wordWrap": "on",
+    "editor.wordWrap": "off",
     "vim.useCtrlKeys": false,
     "workbench.sideBar.location": "left",
     "editor.renderWhitespace": "none",
@@ -16,13 +16,10 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true,
     "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "window.zoomLevel": 1,
     "telemetry.enableTelemetry": false,
     "telemetry.enableCrashReporter": false,
     "code-runner.executorMap": {
-        "c": "cd $dir && gcc -Wall -O3 $fileName -o a.ao && $dira.ao",
-        "cg": "cd $dir && gcc -Wall -g $fileName -o a.ao && gdb $dira.ao"
+        "cpp": "cd $dir && g++ -DAKARI -I/home/karin0/lark/oi/repo/env -Wall -O0 $fileName -o /tmp/a.out && /tmp/a.out"
     },
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
@@ -31,11 +28,29 @@
     "[cpp]": {
         "editor.defaultFormatter": "xaver.clang-format"
     },
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ],
-    "http.proxy": "http://127.0.0.1:10808"
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "http.proxy": "http://127.0.0.1:10808",
+    "markdown.extension.katex.macros": {
+        "\\ds": "\\displaystyle",
+        "\\c": "\\displaystyle\\binom",
+        "\\df": "\\dfrac",
+        "\\rm": "\\mathrm",
+        "\\un": "\\,\\mathrm",
+        "\\u": "\\,\\mathrm",
+        "\\K": "\\un{K}"
+    },
+    "gitlens.views.formats.commits.description": "${id}, ${authorNotYou, }${agoOrDate}",
+    "gitlens.views.formats.commits.label": "${[tips]  }${message}",
+    "window.zoomLevel": 1,
+    "editor.cursorStyle": "line",
+    "editor.insertSpaces": false,
+    "editor.lineNumbers": "on",
+    "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "diffEditor.ignoreTrimWhitespace": false
 }
