@@ -39,6 +39,9 @@ bindkey -M isearch . self-insert
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
 source ~/dotfiles/zsh/aliases.sh
+if ! echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
+    source ~/dotfiles/zsh/ext_aliases.sh
+fi
 if [ -f ~/aliases.sh ]; then
     source ~/aliases.sh
 fi
