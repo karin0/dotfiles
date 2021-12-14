@@ -81,7 +81,7 @@ zinit ice lucid wait
 zinit light zsh-users/zsh-completions
 
 zinit ice depth=1
-zinit light denysdovhan/spaceship-prompt
+# zinit light denysdovhan/spaceship-prompt
 # zinit light romkatv/powerlevel10k
 
 zinit ice svn
@@ -99,4 +99,7 @@ enpx
 # # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 # [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-source ~/dotfiles/zsh/spaceship.sh
+# source ~/dotfiles/zsh/spaceship.sh
+
+export STARSHIP_CONFIG=~/dotfiles/zsh/starship.toml
+eval "$(starship init zsh)"
