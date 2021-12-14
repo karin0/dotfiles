@@ -22,6 +22,7 @@ alias gs='git status'
 alias gd='git diff'
 alias ga='git add'
 alias gaa='git status && read && git add .'
+alias gpp='pc git push'
 
 mkcd () {
     mkdir -p -- "$1" && \
