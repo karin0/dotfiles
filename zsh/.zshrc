@@ -1,10 +1,20 @@
+export KRR_HERE="$HOME/dotfiles/zsh"
+HERE="$KRR_HERE"
+
+source "$HERE/common.sh"
+
+if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
+    export KRR_TMX=1
+    export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
+    source "$HERE/tmx.sh"
+else
+    export STARSHIP_CONFIG="$HERE/starship.toml"
+    source "$HERE/ext.sh"
+fi
+
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
-
-export VISUAL="vim"
-export EDITOR="vim"
-export PATH=$HOME/lark/bin:$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 
 rationalise-dot() {
   local MATCH # keep the regex match from leaking to the environment
@@ -21,23 +31,6 @@ bindkey . rationalise-dot
 bindkey -M isearch . self-insert
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
-
-HERE="$HOME/dotfiles/zsh"
-
-source "$HERE/aliases.sh"
-
-if [ -f ~/aliases.sh ]; then
-    source ~/aliases.sh
-fi
-
-if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
-    export KRR_TMX=1
-    export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
-    source "$HERE/tmx.sh"
-else
-    export STARSHIP_CONFIG="$HERE/starship.toml"
-    source "$HERE/ext.sh"
-fi
 
 epx
 
