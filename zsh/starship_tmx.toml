@@ -85,17 +85,6 @@ read_only = " "
 [cmd_duration]
 show_milliseconds = true
 
-[[battery.display]]
-threshold = 30
-style = "bold red"
-
-[[battery.display]]
-threshold = 50
-style = "bold yellow"
-
-[[battery.display]]
-threshold = 100
-style = "bold green"
 [aws]
 symbol = "  "
 
