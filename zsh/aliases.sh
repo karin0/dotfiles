@@ -7,6 +7,7 @@ alias pc=proxychains4
 alias lt='ls -lAhtr'
 # alias ls='lsd -A'
 # alias ll='lsd -Al --date "+%F %T"'
+alias cat='bat --pager=never'
 
 alias px='HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 ALL_PROXY=http://127.0.0.1:10808'
 
@@ -46,7 +47,7 @@ mkcd () {
 #     gac "$*" && proxychains4 git push
 # }
 
-sv() {
+sva() {
 	if [ -n $1 ]; then
 		. "$1/venv/bin/activate"
 	else

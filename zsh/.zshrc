@@ -4,7 +4,7 @@ SAVEHIST=10000000
 
 export VISUAL="vim"
 export EDITOR="vim"
-export PATH=$HOME/lark/bin:$HOME/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/lark/bin:$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 
 BASE16_SHELL="$HOME/clones/base16-shell/"
 [ -n "$PS1" ] && \
@@ -71,8 +71,9 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
-zinit ice lucid wait atinit='zpcompinit'
-zinit light zdharma/fast-syntax-highlighting
+# zinit ice lucid wait atinit='zpcompinit'
+# zinit light zdharma/fast-syntax-highlighting
+zinit light zdharma-continuum/fast-syntax-highlighting
 
 zinit ice lucid wait atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
