@@ -6,13 +6,6 @@ export VISUAL="vim"
 export EDITOR="vim"
 export PATH=$HOME/lark/bin:$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 
-BASE16_SHELL="$HOME/clones/base16-shell/"
-[ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
-
-eval "$(zoxide init zsh)"
-
 rationalise-dot() {
   local MATCH # keep the regex match from leaking to the environment
   if [[ $LBUFFER =~ '(^|/| |      |'$'\n''|\||;|&)\.\.$' ]]; then
@@ -29,14 +22,21 @@ bindkey -M isearch . self-insert
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
-source ~/dotfiles/zsh/aliases.sh
+HERE="$HOME/dotfiles/zsh"
 
-if ! echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
-    source ~/dotfiles/zsh/ext_aliases.sh
-fi
+source "$HERE/aliases.sh"
 
 if [ -f ~/aliases.sh ]; then
     source ~/aliases.sh
+fi
+
+if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
+    export KRR_TMX=1
+    export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
+    source "$HERE/tmx.sh"
+else
+    export STARSHIP_CONFIG="$HERE/starship.toml"
+    source "$HERE/ext.sh"
 fi
 
 epx
@@ -71,12 +71,13 @@ zinit light zsh-users/zsh-completions
 
 # proxychains may be needed
 
-zinit ice svn
-zinit snippet OMZ::plugins/extract
+if [ -z $KRR_TMX ]; then
+    zinit ice svn
+    zinit snippet OMZ::plugins/extract
+fi
 
 enpx
 
 # source ~/dotfiles/zsh/spaceship.sh
 
-export STARSHIP_CONFIG=~/dotfiles/zsh/starship.toml
 eval "$(starship init zsh)"
