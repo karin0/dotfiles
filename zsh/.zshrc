@@ -56,7 +56,8 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-# zinit ice lucid wait atinit='zpcompinit'
+zinit ice lucid wait atinit='zpcompinit'
+
 # zinit light zdharma/fast-syntax-highlighting
 zinit light zdharma-continuum/fast-syntax-highlighting
 
