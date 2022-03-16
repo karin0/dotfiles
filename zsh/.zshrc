@@ -12,6 +12,10 @@ else
     source "$HERE/ext.sh"
 fi
 
+if [ -f "~/aliases.sh" ]; then
+    source "~/aliases.sh"
+fi
+
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000

@@ -13,9 +13,7 @@ alias px='HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 A
 
 alias epx='export HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 ALL_PROXY=http://127.0.0.1:10808'
 
-alias enpx='export HTTP_PROXY= HTTPS_PROXY= ALL_PROXY='
-
-alias tldr='pc -q tldr'
+alias enpx='unset HTTP_PROXY; unset HTTPS_PROXY; unset ALL_PROXY'
 
 alias gcm='git commit -m'
 alias gcam='git commit -am'
@@ -23,7 +21,6 @@ alias gs='git status'
 alias gd='git diff'
 alias ga='git add'
 alias gaa='git status && read && git add .'
-alias gpp='pc git push'
 
 mkcd () {
     mkdir -p -- "$1" && \
