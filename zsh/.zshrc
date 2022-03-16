@@ -4,16 +4,16 @@ HERE="$KRR_HERE"
 source "$HERE/common.sh"
 
 if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
-    export KRR_TMX=1
-    export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
-    source "$HERE/tmx.sh"
+  export KRR_TMX=1
+  export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
+  source "$HERE/tmx.sh"
 else
-    export STARSHIP_CONFIG="$HERE/starship.toml"
-    source "$HERE/ext.sh"
+  export STARSHIP_CONFIG="$HERE/starship.toml"
+  source "$HERE/ext.sh"
 
-    if [ "$USERNAME" = "root" ]; then
-      alias epx=
-    fi
+  if [ "$USERNAME" = "root" ]; then
+    alias epx=
+  fi
 fi
 
 if [ -f "~/aliases.sh" ]; then
@@ -40,8 +40,6 @@ bindkey -M isearch . self-insert
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 
-epx
-
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -56,29 +54,25 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-zinit ice lucid wait atinit='zpcompinit'
+zinit ice lucid wait
+zinit light zsh-users/zsh-completions
 
-# zinit light zdharma/fast-syntax-highlighting
+zinit ice lucid wait atinit='zpcompinit'
+zinit light Aloxaf/fzf-tab
+
 zinit light zdharma-continuum/fast-syntax-highlighting
 
 zinit ice lucid wait atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
-zinit ice lucid wait
-zinit light zsh-users/zsh-completions
-
 # zinit ice depth=1
 # zinit light denysdovhan/spaceship-prompt
 # zinit light romkatv/powerlevel10k
 
-# proxychains may be needed
-
 if [ -z $KRR_TMX ]; then
-    zinit ice svn
-    zinit snippet OMZ::plugins/extract
+  zinit ice svn
+  zinit snippet OMZ::plugins/extract
 fi
-
-enpx
 
 # source ~/dotfiles/zsh/spaceship.sh
 
