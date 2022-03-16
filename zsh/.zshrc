@@ -10,6 +10,10 @@ if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
 else
     export STARSHIP_CONFIG="$HERE/starship.toml"
     source "$HERE/ext.sh"
+
+    if [ "$USERNAME" = "root" ]; then
+      alias epx=
+    fi
 fi
 
 if [ -f "~/aliases.sh" ]; then
