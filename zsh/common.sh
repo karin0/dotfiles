@@ -1,5 +1,8 @@
-export VISUAL="vim"
-export EDITOR="vim"
+if vim --version >/dev/null 2>&1; then
+  export VISUAL="vim"
+  export EDITOR="vim"
+fi
+
 export PATH=$HOME/lark/bin:$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH
 
 source "$KRR_HERE/aliases.sh"

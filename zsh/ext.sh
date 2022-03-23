@@ -1,6 +1,11 @@
-alias ls='exa -a --icons'
-alias ll='exa -al --git --time-style iso --icons'
-alias rm='trash-put -v'
+if exa -v >/dev/null 2>&1; then
+  alias ls='exa -a --icons'
+  alias ll='exa -al --git --time-style iso --icons'
+fi
+
+if trash --version >/dev/null 2>&1; then
+  alias rm='trash-put -v'
+fi
 
 alias spsyu='sudo pacman -Syu'
 
@@ -10,4 +15,6 @@ alias spsyu='sudo pacman -Syu'
 alias mntd="sudo mount /dev/nvme0n1p4 /mnt/d"
 alias mntc="sudo mount /dev/nvme0n1p2 /mnt/c"
 
-eval "$(zoxide init zsh)"
+if zoxide -V >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi

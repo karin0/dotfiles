@@ -57,8 +57,10 @@ autoload -Uz _zinit
 zinit ice lucid wait
 zinit light zsh-users/zsh-completions
 
-zinit ice lucid wait atinit='zpcompinit'
-zinit light Aloxaf/fzf-tab
+if fzf --version >/dev/null 2>&1; then
+  zinit ice lucid wait atinit='zpcompinit'
+  zinit light Aloxaf/fzf-tab
+fi
 
 zinit light zdharma-continuum/fast-syntax-highlighting
 
@@ -75,5 +77,6 @@ if [ -z $KRR_TMX ]; then
 fi
 
 # source ~/dotfiles/zsh/spaceship.sh
-
-eval "$(starship init zsh)"
+if starship --version >/dev/null; then
+  eval "$(starship init zsh)"
+fi
