@@ -1,7 +1,12 @@
 export KRR_HERE="$HOME/dotfiles/zsh"
-HERE="$KRR_HERE"
+local HERE="$KRR_HERE"
 
 source "$HERE/common.sh"
+source "$HERE/aliases.sh"
+
+if [ -f ~/aliases.sh ]; then
+    source ~/aliases.sh
+fi
 
 if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
   export KRR_TMX=1
@@ -14,10 +19,6 @@ else
   if [ "$USERNAME" = "root" ]; then
     alias epx=
   fi
-fi
-
-if [ -f "~/aliases.sh" ]; then
-    source "~/aliases.sh"
 fi
 
 HISTFILE="$HOME/.zsh_history"
@@ -57,8 +58,9 @@ autoload -Uz _zinit
 zinit ice lucid wait
 zinit light zsh-users/zsh-completions
 
+zinit ice lucid wait atinit='zpcompinit'
+
 if fzf --version >/dev/null 2>&1; then
-  zinit ice lucid wait atinit='zpcompinit'
   zinit light Aloxaf/fzf-tab
 fi
 
@@ -72,11 +74,10 @@ zinit light zsh-users/zsh-autosuggestions
 # zinit light romkatv/powerlevel10k
 
 if [ -z $KRR_TMX ]; then
+  epx
   zinit ice svn
   zinit snippet OMZ::plugins/extract
+  unepx
 fi
 
-# source ~/dotfiles/zsh/spaceship.sh
-if starship --version >/dev/null; then
-  eval "$(starship init zsh)"
-fi
+source "$HERE/opt.sh"

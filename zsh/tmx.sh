@@ -1,4 +1,4 @@
-alias spsyu="pc apt update && pc apt upgrade"
+alias spsyu="apt update && apt upgrade"
 
 sv-status() {
     sv status "$1"

@@ -1,19 +1,13 @@
 alias cp='cp -iv'
 alias mv='mv -iv'
 
-# alias pc="proxychains4 -f ~/dotfiles/etc/proxychains.conf"
-alias pc=proxychains4
-
 alias lt='ls -lAhtr'
-# alias ls='lsd -A'
-# alias ll='lsd -Al --date "+%F %T"'
-alias cat='bat --pager=never'
 
-alias px='HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 ALL_PROXY=http://127.0.0.1:10808'
+local PROXY=http://127.0.0.1:10808
 
-alias epx='export HTTP_PROXY=http://127.0.0.1:10808 HTTPS_PROXY=http://127.0.0.1:10808 ALL_PROXY=http://127.0.0.1:10808'
-
-alias enpx='unset HTTP_PROXY; unset HTTPS_PROXY; unset ALL_PROXY'
+alias px="HTTP_PROXY=$PROXY HTTPS_PROXY=$PROXY ALL_PROXY=$PROXY"
+alias epx="export HTTP_PROXY=$PROXY HTTPS_PROXY=$PROXY ALL_PROXY=$PROXY"
+alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY'
 
 alias gcm='git commit -m'
 alias gcam='git commit -am'
