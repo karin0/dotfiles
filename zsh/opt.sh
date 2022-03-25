@@ -12,7 +12,7 @@ if proxychains4 true >/dev/null 2>&1; then
 fi
 
 if bat -V >/dev/null 2>&1; then
-  alias cat='bat --pager=never'
+  alias cat=bat
 fi
 
 # alias ls='lsd -A'
