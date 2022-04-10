@@ -23,11 +23,6 @@ else
   fi
 fi
 
-if [ "$LANG" = "zh_Hans_CN.UTF-8" ]; then
-  # TermuxArch sets such locales, which is nonexistent
-  source "$HERE/cnize"
-fi
-
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
