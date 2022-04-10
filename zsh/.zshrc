@@ -1,5 +1,5 @@
 export KRR_HERE="$HOME/dotfiles/zsh"
-local HERE="$KRR_HERE"
+HERE="$KRR_HERE"
 
 source "$HERE/common.sh"
 source "$HERE/aliases.sh"
@@ -19,6 +19,11 @@ else
   if [ "$USERNAME" = "root" ]; then
     alias epx=
   fi
+fi
+
+if [ "$LANG" = "zh_Hans_CN.UTF-8" ]; then
+  # TermuxArch sets such locales, which is nonexistent
+  source "$HERE/cnize"
 fi
 
 HISTFILE="$HOME/.zsh_history"
