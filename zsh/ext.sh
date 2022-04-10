@@ -1,3 +1,5 @@
+#!/bin/bash
+
 alias spsyu='sudo pacman -Syu'
 
 # alias ncm='sudo node ~/clones/UnblockNeteaseMusic/app.js -f 59.111.181.38 -p 80:443 &; netease-cloud-music --ignore-certificate-errors'

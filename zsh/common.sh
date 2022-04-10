@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if vim --version >/dev/null 2>&1; then
   export VISUAL="vim"
   export EDITOR="vim"

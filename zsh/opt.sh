@@ -1,3 +1,5 @@
+#!/bin/bash
+
 if exa -v >/dev/null 2>&1; then
   alias ls='exa -a --icons'
   alias ll='exa -al --git --time-style iso --icons'

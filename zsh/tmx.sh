@@ -1,3 +1,5 @@
+#!/bin/bash
+
 alias spsyu="apt update && apt upgrade"
 
 sv-status() {

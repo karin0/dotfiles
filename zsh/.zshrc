@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 export KRR_HERE="$HOME/dotfiles/zsh"
 HERE="$KRR_HERE"
 
