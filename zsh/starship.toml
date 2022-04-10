@@ -1,6 +1,4 @@
 format = """
-$username\
-$hostname\
 $shlvl\
 $singularity\
 $kubernetes\
@@ -12,6 +10,8 @@ $git_state\
 $git_metrics\
 $git_status\
 $hg_branch\
+$username\
+$hostname\
 $docker_context\
 $package\
 $cmake\
@@ -63,6 +63,14 @@ $battery\
 $line_break\
 $shell\
 $character"""
+
+[username]
+show_always = true
+format = "as [$user]($style) @ "
+
+[hostname]
+ssh_only = false
+format = "[$hostname]($style) "
 
 [character]
 success_symbol = "[\\$](bold green)"
