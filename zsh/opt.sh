@@ -1,5 +1,19 @@
 #!/bin/bash
 
+if pacman -V >/dev/null 2>&1; then
+  alias pasyu='sudo pacman -Syu'
+  alias paarm='sudo pacman -Rs $(pacman -Qdtq)'
+elif apt -V >/dev/null 2>&1; then
+  # sudo is neither necessary nor available in Termux
+  if sudo -V >/dev/null 2>&1; then
+    SUDO='sudo'
+  else
+    SUDO=''
+  fi
+  alias pasyu="$SUDO apt update && $SUDO apt upgrade"
+  alias paarm="$SUDO apt autoremove"
+fi
+
 if exa -v >/dev/null 2>&1; then
   alias ls='exa -a --icons'
   alias ll='exa -al --git --time-style iso --icons'
