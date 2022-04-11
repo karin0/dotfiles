@@ -80,9 +80,9 @@ if [ -z $KRR_TMX ]; then
   unepx
 fi
 
-source "$HERE/opt.sh"
-
-if KRR_DEV=$(cat ~/dotfiles/devid); then
+if KRR_DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
   RC=~/dotfiles/dev/$KRR_DEV/zshrc
   [ -f "$RC" ] && . "$RC"
 fi
+
+source "$HERE/opt.sh"
