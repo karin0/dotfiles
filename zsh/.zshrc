@@ -83,3 +83,8 @@ if [ -z $KRR_TMX ]; then
 fi
 
 source "$HERE/opt.sh"
+
+if KRR_DEV=$(cat ~/dotfiles/devid); then
+  RC=~/dotfiles/dev/$KRR_DEV/zshrc
+  [ -f "$RC" ] && . "$RC"
+fi
