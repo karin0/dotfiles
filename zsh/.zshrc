@@ -13,10 +13,8 @@ fi
 if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
   export KRR_TMX=1
   export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
-  source "$HERE/tmx.sh"
 else
   export STARSHIP_CONFIG="$HERE/starship.toml"
-  source "$HERE/ext.sh"
 
   if [ "$USERNAME" = "root" ]; then
     alias epx=

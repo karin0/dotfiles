@@ -1,0 +1,2 @@
+alias mntd="sudo mount /dev/nvme0n1p4 /mnt/d"
+alias mntc="sudo mount /dev/nvme0n1p2 /mnt/c"
