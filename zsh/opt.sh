@@ -3,7 +3,7 @@
 if pacman -V >/dev/null 2>&1; then
   alias pasyu='sudo pacman -Syu'
   alias paarm='sudo pacman -Rs $(pacman -Qdtq)'
-elif apt -V >/dev/null 2>&1; then
+elif apt -v >/dev/null 2>&1; then
   # sudo is neither necessary nor available in Termux
   if sudo -V >/dev/null 2>&1; then
     SUDO='sudo'
