@@ -73,7 +73,7 @@ zinit light zsh-users/zsh-autosuggestions
 # zinit light denysdovhan/spaceship-prompt
 # zinit light romkatv/powerlevel10k
 
-if [ -z $KRR_TMX ]; then
+if [ -z $KRR_TMX ] && svn --version >/dev/null 2>&1; then
   epx
   zinit ice svn
   zinit snippet OMZ::plugins/extract
