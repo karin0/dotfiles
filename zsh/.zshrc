@@ -80,8 +80,8 @@ if [ -z $KRR_TMX ] && svn --version >/dev/null 2>&1; then
   unepx
 fi
 
-if KRR_DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
-  RC=~/dotfiles/dev/$KRR_DEV/zshrc
+if KRR_DEV=$(cat ~/dotsecrets/devid 2>/dev/null); then
+  RC=~/dotsecrets/dev/$KRR_DEV/zshrc
   [ -f "$RC" ] && . "$RC"
 fi
 

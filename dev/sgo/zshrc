@@ -1,2 +1,0 @@
-alias mntc='sudo mount /dev/nvme0n1p3 /mnt/c'
-alias dtp='xinput disable 10'

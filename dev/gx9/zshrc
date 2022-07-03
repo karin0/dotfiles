@@ -1,3 +1,0 @@
-alias mntc="sudo mount -t ntfs3 /dev/nvme0n1p2 /mnt/c"
-alias mntd="sudo mount -t ntfs3 /dev/nvme0n1p4 /mnt/d"
-alias mnte="sudo mount -t ntfs3 /dev/nvme1n1p2 /mnt/e"
