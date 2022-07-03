@@ -83,6 +83,9 @@ fi
 if KRR_DEV=$(cat ~/dotsecrets/devid 2>/dev/null); then
   RC=~/dotsecrets/dev/$KRR_DEV/zshrc
   [ -f "$RC" ] && . "$RC"
+else
+  export LANG=zh_CN.UTF-8
+  export LANGUAGE=zh_CN:zh_TW:en_US
 fi
 
 source "$HERE/opt.sh"
