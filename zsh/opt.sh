@@ -47,7 +47,7 @@ if starship --version >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-if systemctl --version >/dev/null 2>&1 && [[ $USER != root ]]; then
+if systemctl --version >/dev/null 2>&1; then
   alias systemutl='systemctl --user'
   alias journalutl='journalctl --user'
 fi
