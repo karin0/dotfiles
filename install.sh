@@ -23,11 +23,11 @@ add() {
   ln -s "$source" -- "$file"
 }
 
-if zsh --version; then
-  add zsh/.zshrc ~/.zshrc
-fi
+zsh --version && add zsh/.zshrc ~/.zshrc
 
 if s=$(vim --version); then
   echo "$s" | head -n1
   add vim/vimrc ~/.vimrc
 fi
+
+[ -f ~/dotsecrets/install.sh ] && . ~/dotsecrets/install.sh
