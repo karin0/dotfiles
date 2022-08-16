@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if pacman -V >/dev/null 2>&1; then
-  alias pasyu='sudo pacman -Syu'
-  alias paarm='sudo pacman -Rs $(pacman -Qdtq)'
+  alias syu='sudo pacman -Syu'
+  alias autoremove='sudo pacman -Rs $(pacman -Qdtq)'
 elif apt -v >/dev/null 2>&1; then
   # sudo is neither necessary nor available in Termux
   if sudo -V >/dev/null 2>&1; then
@@ -10,8 +10,8 @@ elif apt -v >/dev/null 2>&1; then
   else
     SUDO=''
   fi
-  alias pasyu="$SUDO apt update && $SUDO apt upgrade"
-  alias paarm="$SUDO apt autoremove"
+  alias syu="$SUDO apt update && $SUDO apt upgrade"
+  alias autoremove="$SUDO apt autoremove"
 fi
 
 if exa -v >/dev/null 2>&1; then
