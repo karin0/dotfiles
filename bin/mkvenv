@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# dependencies: python3 (or via -i), openssl, (set a mirror in pip.ini or a proxy)
+
+set -e
+
+usage() {
+  echo "Usage: $0 [-i interpreter-path] [-c] [-u] [requirements-path]"
+  exit 1
+}
+
+reqs=requirements.txt
+pybin=python3
+check=0
+update=0
+
+OPTIND=1
+while [ $OPTIND -le "$#" ]; do
+  if getopts i:uc opt; then
+    case "$opt" in
+      i)
+        pybin="$OPTARG"
+        [ -z "$pybin" ] && usage
+        ;;
+      c) check=1 ;;
+      u) update=1 ;;
+      *) usage
+    esac
+  else
+    reqs="${!OPTIND}"
+    ((OPTIND++))
+  fi
+done
+
+venv=.vent
+vpy=$venv/bin/python
+
+run_pip() {
+  $vpy -m pip install -U pip wheel setuptools
+  $vpy -m pip install -U -r "$reqs"
+}
+
+update_and_exit() {
+  [ $update -eq 1 ] && run_pip
+  exit 0
+}
+
+if [ -x $vpy ]; then
+  if [ $check -ne 1 ] || $vpy -c 'import pip' >/dev/null; then
+    update_and_exit
+  fi
+  # python major version changed?
+  echo "Nuking broken $venv .." >&2
+  rm -r $venv
+elif [ -e $venv ]; then
+  echo "Non-venv $venv exists, which needs to be removed first."
+  exit 1
+fi
+
+echo "Creating a new venv with $pybin at $venv .."
+$pybin -m venv $venv
+
+echo "Installing $reqs .."
+run_pip
