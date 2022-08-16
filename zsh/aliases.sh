@@ -24,14 +24,18 @@ mkcd () {
 }
 
 sva() {
-	if [ -n $1 ]; then
-		. "$1/venv/bin/activate"
+	if [ -n "$1" ]; then
+		base="$1"
 	else
-		. "venv/bin/activate"
+		base=.
+	fi
+	if [ -x "$base/venv/bin/python" ]; then
+		. "$base/venv/bin/activate"
+	elif [ -x "$base/.vent/bin/python" ]; then
+		. "$base/.vent/bin/activate"
 	fi
 }
 
 pycclean() {
-	local a="$(find . -regex '^.*\(__pycache__\|\.py[co]\)$' $* -name site-packages -prune -name .git -name venv)"
-    echo $a
+	find . -regex '^.*\(__pycache__\|\.py[co]\)$' $* -name site-packages -prune -name .git -name venv
 }
