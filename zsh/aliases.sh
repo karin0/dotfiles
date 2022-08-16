@@ -5,7 +5,7 @@ alias mv='mv -iv'
 
 alias lt='ls -lAhtr'
 
-PROXY=http://127.0.0.1:10808
+PROXY=http://127.0.0.1:10807
 
 alias px="HTTP_PROXY=$PROXY HTTPS_PROXY=$PROXY ALL_PROXY=$PROXY"
 alias epx="export HTTP_PROXY=$PROXY HTTPS_PROXY=$PROXY ALL_PROXY=$PROXY"
@@ -22,23 +22,6 @@ mkcd () {
     mkdir -p -- "$1" && \
     cd -P -- "$1"
 }
-
-# gac() {
-#     LOG="$*"
-#     git diff --name-only && \
-#     read -n 1 && \
-#     git add . && \
-#     git commit -m "$LOG" && \
-#     read -n 1
-# }
-
-# gacp() {
-#     gac "$*" && git push
-# }
-
-# pgacp() {
-#     gac "$*" && proxychains4 git push
-# }
 
 sva() {
 	if [ -n $1 ]; then
