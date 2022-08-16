@@ -8,7 +8,7 @@ add() {
   source="$HERE/$1"
   file="$2"
   if [ -e "$file" ]; then
-    if [ -L "$file" ] && [ "$(readlink "$file")" -ef "$source" ]; then
+    if [ "$file" -ef "$source" ]; then
       echo "$file is already installed."
       return
     fi
@@ -16,7 +16,7 @@ add() {
     if [ "$size" -eq 0 ]; then
       rm -- "$file"
     else
-      echo "$file already exists, skipping."
+      echo "$file ($size B) already exists, skipping."
       return
     fi
   fi
