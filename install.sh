@@ -30,4 +30,7 @@ if s=$(vim --version); then
   add vim/vimrc ~/.vimrc
 fi
 
-[ -f ~/dotsecrets/install.sh ] && . ~/dotsecrets/install.sh
+if [ -f ~/dotsecrets/install.sh ]; then
+  HERE=~/dotsecrets
+  . ~/dotsecrets/install.sh
+fi
