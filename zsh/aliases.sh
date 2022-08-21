@@ -33,6 +33,8 @@ sva() {
 		. "$base/venv/bin/activate"
 	elif [ -x "$base/.vent/bin/python" ]; then
 		. "$base/.vent/bin/activate"
+	else
+		return 1
 	fi
 }
 
