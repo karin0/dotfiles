@@ -75,6 +75,7 @@ if in_path svn; then
   epx
   zinit ice svn
   zinit snippet OMZ::plugins/extract
+  zinit snippet OMZ::lib/history.zsh
   unepx
 fi
 
