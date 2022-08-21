@@ -77,7 +77,7 @@ error_symbol = "[\\$](bold red)"
 vicmd_symbol = "[N](bold green)"
 
 [time]
-disabled = false
+disabled = true
 
 [nodejs]
 symbol = '⬢ '
