@@ -9,7 +9,6 @@ SAVEHIST=10000000
 alias in_path='whence -p >/dev/null'
 
 . "$HERE/common.sh"
-. "$HERE/aliases.sh"
 
 export STARSHIP_CONFIG="$HERE/starship.toml"
 
@@ -19,6 +18,8 @@ if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
   RC=~/dotsecrets/dev/$DEV/zshrc
   [ -f "$RC" ] && . "$RC"
 fi
+
+. "$HERE/aliases.sh"
 
 rationalise-dot() {
   local MATCH # keep the regex match from leaking to the environment

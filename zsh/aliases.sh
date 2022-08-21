@@ -5,10 +5,8 @@ alias mv='mv -iv'
 
 alias lt='ls -lAhtr'
 
-PROXY=http://127.0.0.1:10807
-
-alias px="HTTP_PROXY=$PROXY HTTPS_PROXY=$PROXY ALL_PROXY=$PROXY"
-alias epx="export HTTP_PROXY=$PROXY HTTPS_PROXY=$PROXY ALL_PROXY=$PROXY"
+alias px='HTTP_PROXY=$KRR_PROXY HTTPS_PROXY=$KRR_PROXY ALL_PROXY=$KRR_PROXY'
+alias epx='[ -n "$KRR_PROXY" ] && export HTTP_PROXY=$KRR_PROXY HTTPS_PROXY=$KRR_PROXY ALL_PROXY=$KRR_PROXY'
 alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY'
 
 alias gcm='git commit -m'
