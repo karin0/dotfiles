@@ -21,14 +21,16 @@ add() {
     fi
   fi
   ln -s "$source" -- "$file"
+  echo "Installed $file."
 }
 
-zsh --version && add zsh/.zshrc ~/.zshrc
+in_path() {
+  type -P "$@"
+}
 
-if s=$(vim --version); then
-  echo "$s" | head -n1
-  add vim/vimrc ~/.vimrc
-fi
+in_path zsh && add zsh/.zshrc ~/.zshrc
+in_path vim && add vim/vimrc ~/.vimrc
+in_path fish && add fish/config.fish ~/.config/fish/config.fish
 
 if [ -f ~/dotsecrets/install.sh ]; then
   HERE=~/dotsecrets

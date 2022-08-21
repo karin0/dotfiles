@@ -13,7 +13,9 @@ alias in_path='whence -p >/dev/null'
 
 export STARSHIP_CONFIG="$HERE/starship.toml"
 
-if DEV=$(cat ~/dotsecrets/devid 2>/dev/null); then
+if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
+  RC=~/dotfiles/dev/$DEV/zshrc
+  [ -f "$RC" ] && . "$RC"
   RC=~/dotsecrets/dev/$DEV/zshrc
   [ -f "$RC" ] && . "$RC"
 else
