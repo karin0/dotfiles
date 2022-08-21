@@ -69,12 +69,11 @@ zinit light zsh-users/zsh-autosuggestions
 # zinit light denysdovhan/spaceship-prompt
 # zinit light romkatv/powerlevel10k
 
+zinit snippet OMZ::lib/history.zsh
+
 if in_path svn; then
-  epx
   zinit ice svn
   zinit snippet OMZ::plugins/extract
-  zinit snippet OMZ::lib/history.zsh
-  unepx
 fi
 
 . "$HERE/opt.sh"
