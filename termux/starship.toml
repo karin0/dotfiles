@@ -91,6 +91,7 @@ truncation_length = 10
 read_only = " "
 
 [cmd_duration]
+disabled = true
 show_milliseconds = true
 
 [aws]
