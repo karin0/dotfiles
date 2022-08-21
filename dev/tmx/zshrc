@@ -1,6 +1,6 @@
 export STARSHIP_CONFIG="$HERE/../termux/starship.toml"
 
-alias updategpg='echo UPDATESTARTUPTTY | gpg-connect-agent'
+alias updategpg='export GPG_TTY=$(tty); echo UPDATESTARTUPTTY | gpg-connect-agent'
 
 if ! gpg-agent -s; then
   gpgconf --launch gpg-agent
