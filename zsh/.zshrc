@@ -18,9 +18,6 @@ if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
   [ -f "$RC" ] && . "$RC"
   RC=~/dotsecrets/dev/$DEV/zshrc
   [ -f "$RC" ] && . "$RC"
-else
-  export LANG=zh_CN.UTF-8
-  export LANGUAGE=zh_CN:zh_TW:en_US
 fi
 
 rationalise-dot() {
