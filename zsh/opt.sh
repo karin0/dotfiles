@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if pacman -V >/dev/null 2>&1; then
+if in_path pacman; then
   alias syu='sudo pacman -Syu'
   alias autoremove='sudo pacman -Rs $(pacman -Qdtq)'
-elif apt -v >/dev/null 2>&1; then
+elif in_path apt; then
   # sudo is neither necessary nor available in Termux
-  if sudo -V >/dev/null 2>&1; then
+  if in_path sudo; then
     SUDO='sudo'
   else
     SUDO=''
@@ -14,22 +14,16 @@ elif apt -v >/dev/null 2>&1; then
   alias autoremove="$SUDO apt autoremove"
 fi
 
-if exa -v >/dev/null 2>&1; then
+if in_path exa; then
   alias ls='exa -a --icons'
   alias ll='exa -al --git --time-style iso --icons'
 fi
 
-if trash --version >/dev/null 2>&1; then
-  alias rm='trash-put -v'
-fi
+in_path trash && alias rm='trash-put -v'
 
-if proxychains4 true >/dev/null 2>&1; then
-  alias pc=proxychains4
-fi
+in_path proxychains4 && alias pc=proxychains4
 
-if bat -V >/dev/null 2>&1; then
-  alias cat=bat
-fi
+in_path bat && alias cat=bat
 
 # alias ls='lsd -A'
 # alias ll='lsd -Al --date "+%F %T"'
@@ -39,16 +33,7 @@ BASE16_SHELL="$HOME/clones/base16-shell/"
     [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
-if zoxide -V >/dev/null 2>&1; then
-  eval "$(zoxide init zsh)"
-fi
-
-if starship --version >/dev/null 2>&1; then
-  eval "$(starship init zsh)"
-fi
-
-if systemctl --version >/dev/null 2>&1; then
+if in_path systemctl; then
   alias systemutl='systemctl --user'
   alias journalutl='journalctl --user'
 fi
-

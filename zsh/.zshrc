@@ -1,29 +1,25 @@
 #!/bin/zsh
 
-export KRR_HERE="$HOME/dotfiles/zsh"
-HERE="$KRR_HERE"
-
-source "$HERE/common.sh"
-source "$HERE/aliases.sh"
-
-if [ -f ~/aliases.sh ]; then
-    source ~/aliases.sh
-fi
-
-if echo "$PREFIX" | grep -o "com.termux" >/dev/null 2>/dev/null; then
-  export KRR_TMX=1
-  export STARSHIP_CONFIG="$HERE/starship_tmx.toml"
-else
-  export STARSHIP_CONFIG="$HERE/starship.toml"
-
-  if [ "$USERNAME" = "root" ]; then
-    alias epx=
-  fi
-fi
+HERE="$HOME/dotfiles/zsh"
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
+
+alias in_path='whence -p >/dev/null'
+
+. "$HERE/common.sh"
+. "$HERE/aliases.sh"
+
+export STARSHIP_CONFIG="$HERE/starship.toml"
+
+if DEV=$(cat ~/dotsecrets/devid 2>/dev/null); then
+  RC=~/dotsecrets/dev/$DEV/zshrc
+  [ -f "$RC" ] && . "$RC"
+else
+  export LANG=zh_CN.UTF-8
+  export LANGUAGE=zh_CN:zh_TW:en_US
+fi
 
 rationalise-dot() {
   local MATCH # keep the regex match from leaking to the environment
@@ -60,7 +56,7 @@ zinit light zsh-users/zsh-completions
 
 zinit ice lucid wait atinit='zpcompinit'
 
-if fzf --version >/dev/null 2>&1; then
+if in_path fzf; then
   zinit light Aloxaf/fzf-tab
 fi
 
@@ -73,19 +69,14 @@ zinit light zsh-users/zsh-autosuggestions
 # zinit light denysdovhan/spaceship-prompt
 # zinit light romkatv/powerlevel10k
 
-if [ -z $KRR_TMX ] && svn --version >/dev/null 2>&1; then
+if in_path svn; then
   epx
   zinit ice svn
   zinit snippet OMZ::plugins/extract
   unepx
 fi
 
-if KRR_DEV=$(cat ~/dotsecrets/devid 2>/dev/null); then
-  RC=~/dotsecrets/dev/$KRR_DEV/zshrc
-  [ -f "$RC" ] && . "$RC"
-else
-  export LANG=zh_CN.UTF-8
-  export LANGUAGE=zh_CN:zh_TW:en_US
-fi
+. "$HERE/opt.sh"
 
-source "$HERE/opt.sh"
+in_path zoxide && eval "$(zoxide init zsh)"
+in_path starship && eval "$(starship init zsh)"

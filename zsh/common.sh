@@ -1,9 +1,9 @@
 #!/bin/bash
 
-if vim --version >/dev/null 2>&1; then
+if in_path vim; then
   export VISUAL="vim"
   export EDITOR="vim"
-elif vi --version >/dev/null 2>&1; then
+elif in_path vi; then
   export VISUAL="vi"
   export EDITOR="vi"
 fi
