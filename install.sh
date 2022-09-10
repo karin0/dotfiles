@@ -30,7 +30,7 @@ in_path() {
 
 in_path zsh && add zsh/.zshrc ~/.zshrc
 in_path vim && add vim/vimrc ~/.vimrc
-in_path fish && add fish/config.fish ~/.config/fish/config.fish
+# in_path fish && add fish/config.fish ~/.config/fish/config.fish
 
 if [ -f ~/dotsecrets/install.sh ]; then
   HERE=~/dotsecrets
