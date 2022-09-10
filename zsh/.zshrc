@@ -36,6 +36,8 @@ bindkey . rationalise-dot
 bindkey -M isearch . self-insert
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
+YSU_MESSAGE_POSITION=after
+YSU_MODE=ALL
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -75,6 +77,8 @@ if in_path svn; then
   zinit ice svn
   zinit snippet OMZ::plugins/extract
 fi
+
+zinit light MichaelAquilina/zsh-you-should-use
 
 . "$HERE/opt.sh"
 
