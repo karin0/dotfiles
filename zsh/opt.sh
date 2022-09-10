@@ -4,11 +4,10 @@ if in_path pacman; then
   alias syu='sudo pacman -Syu'
   alias autoremove='sudo pacman -Rs $(pacman -Qdtq)'
 elif in_path apt; then
-  # sudo is neither necessary nor available in Termux
-  if in_path sudo; then
-    SUDO='sudo'
-  else
+  if [ "$USER" = root ] || [ -v TERMUX_VERSION ] ; then
     SUDO=''
+  else
+    SUDO='sudo'
   fi
   alias syu="$SUDO apt update && $SUDO apt upgrade"
   alias autoremove="$SUDO apt autoremove"
