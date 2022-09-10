@@ -1,17 +1,20 @@
 #!/bin/bash
 
-if in_path pacman; then
-  alias syu='sudo pacman -Syu'
-  alias autoremove='sudo pacman -Rs $(pacman -Qdtq)'
-elif in_path apt; then
-  if [ "$USER" = root ] || [ -v TERMUX_VERSION ] ; then
-    SUDO=''
-  else
-    SUDO='sudo'
-  fi
-  alias syu="$SUDO apt update && $SUDO apt upgrade"
-  alias autoremove="$SUDO apt autoremove"
+if [ "$USER" = root ] || [ -v TERMUX_VERSION ] || ! in_path sudo ; then
+  KRR_SUDO=''
+else
+  KRR_SUDO='sudo'
 fi
+
+if in_path pacman; then
+  alias syu="$KRR_SUDO pacman -Syu"
+  alias autoremove="$KRR_SUDO pacman -Rs $(pacman -Qdtq)"
+elif in_path apt; then
+  alias syu="$KRR_SUDO apt update && $KRR_SUDO apt upgrade"
+  alias autoremove="$KRR_SUDO apt autoremove"
+fi
+
+unset KRR_SUDO
 
 if in_path exa; then
   alias ls='exa -a --icons'
