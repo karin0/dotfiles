@@ -36,6 +36,8 @@ BASE16_SHELL="$HOME/clones/base16-shell/"
         eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 if in_path systemctl; then
-  alias systemutl='systemctl --user'
-  alias journalutl='journalctl --user'
+  alias sutl='systemctl --user'
+  alias jutl='journalctl --user'
+  alias sctl=systemctl
+  alias jctl=journalctl
 fi
