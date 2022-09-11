@@ -62,8 +62,6 @@ if in_path fzf; then
   zinit light Aloxaf/fzf-tab
 fi
 
-zinit light zdharma-continuum/fast-syntax-highlighting
-
 zinit ice lucid wait atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
@@ -79,6 +77,12 @@ if in_path svn; then
 fi
 
 zinit light MichaelAquilina/zsh-you-should-use
+
+zinit light zdharma-continuum/fast-syntax-highlighting
+zinit light zsh-users/zsh-history-substring-search
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 . "$HERE/opt.sh"
 
