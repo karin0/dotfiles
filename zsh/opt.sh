@@ -41,3 +41,11 @@ if in_path systemctl; then
   alias sctl=systemctl
   alias jctl=journalctl
 fi
+
+_nohup_entry() {
+  nohup "$@" >/dev/null 2>&1 & disown
+}
+
+in_path clion && alias clion='_nohup_entry clion'
+in_path pycharm && alias pycharm='_nohup_entry pycharm'
+in_path webstorm && alias webstorm='_nohup_entry webstorm'
