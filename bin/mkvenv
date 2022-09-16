@@ -5,7 +5,7 @@
 set -e
 
 usage() {
-  echo "Usage: $0 [-i interpreter-path] [-n venv-name] [-c] [-u] [requirements-path]"
+  echo "Usage: $0 [-i interpreter-path] [-n venv-name] [-c] [-u] [-R] [requirements-path]"
   exit 1
 }
 
@@ -29,6 +29,7 @@ while [ $OPTIND -le "$#" ]; do
         ;;
       c) check=1 ;;
       u) update=1 ;;
+      R) reqs= ;;
       *) usage
     esac
   else
@@ -41,7 +42,9 @@ vpy="$venv/bin/python"
 
 run_pip() {
   "$vpy" -m pip install -U pip wheel setuptools
-  "$vpy" -m pip install -U -r "$reqs"
+  if [ -n "$reqs" ]; then
+    "$vpy" -m pip install -U -r "$reqs"
+  fi
 }
 
 update_and_exit() {
