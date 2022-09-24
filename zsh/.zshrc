@@ -1,4 +1,11 @@
 #!/bin/zsh
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "$cache" ]]; then
+  source "$cache"
+fi
 
 HERE="$HOME/dotfiles/zsh"
 
@@ -53,7 +60,14 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-zinit ice lucid wait
+if [ "$KRR_STAR" != 1 ]; then
+  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+  . "$HERE/p10k.zsh"
+  zinit ice depth=1
+  zinit light romkatv/powerlevel10k
+fi
+
+# zinit ice lucid wait
 zinit light zsh-users/zsh-completions
 
 zinit ice lucid wait atinit='zpcompinit'
@@ -62,7 +76,7 @@ if in_path fzf; then
   zinit light Aloxaf/fzf-tab
 fi
 
-zinit ice lucid wait atload='_zsh_autosuggest_start'
+# zinit ice lucid wait atload='_zsh_autosuggest_start'
 zinit light zsh-users/zsh-autosuggestions
 
 # zinit ice depth=1
@@ -87,4 +101,5 @@ bindkey '^[[B' history-substring-search-down
 . "$HERE/opt.sh"
 
 in_path zoxide && eval "$(zoxide init zsh)"
-in_path starship && eval "$(starship init zsh)"
+
+[ "$KRR_STAR" = 1 ] && in_path starship && eval "$(starship init zsh)"

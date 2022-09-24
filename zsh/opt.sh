@@ -7,18 +7,24 @@ else
 fi
 
 if in_path pacman; then
+  alias pac="$KRR_SUDO pacman"
   alias syu="$KRR_SUDO pacman -Syu"
   alias autoremove="$KRR_SUDO pacman -Rs $(pacman -Qdtq)"
 elif in_path apt; then
   alias syu="$KRR_SUDO apt update && $KRR_SUDO apt upgrade"
   alias autoremove="$KRR_SUDO apt autoremove"
+elif in_path apk; then
+  alias syu="$KRR_SUDO apk -U upgrade"
 fi
 
 unset KRR_SUDO
 
 if in_path exa; then
   alias ls='exa -a --icons'
-  alias ll='exa -al --git --time-style iso --icons'
+  alias ll='exa -alF --git --time-style iso --icons'
+else
+  alias ls='ls --color=auto -aF'
+  alias ll='ls --color=auto -alhF'
 fi
 
 in_path trash && alias rm='trash-put -v'
