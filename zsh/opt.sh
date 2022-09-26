@@ -18,7 +18,7 @@ if in_path pacman; then
   _pacman_autoremove() {
     local s
     if s="$(pacman -Qdtq)" && [ -n "$s" ]; then
-      $KRR_SUDO pacman -Rs "$s"
+      echo "$s" | $KRR_SUDO pacman -Rs -
     fi
   }
   KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
@@ -41,7 +41,7 @@ else
 fi
 
 if in_path exa; then
-  alias ls='exa -a --icons'
+  alias ls='exa -aF --icons'
   alias ll='exa -alF --git --time-style iso --icons'
 else
   alias ls='ls --color=auto -aF'
@@ -49,9 +49,7 @@ else
 fi
 
 in_path trash && alias rm='trash-put -v'
-
 in_path proxychains4 && alias pc=proxychains4
-
 in_path bat && alias cat=bat
 
 # alias ls='lsd -A'
@@ -65,8 +63,8 @@ BASE16_SHELL="$HOME/clones/base16-shell/"
 if in_path systemctl; then
   alias sutl='systemctl --user'
   alias jutl='journalctl --user'
-  alias sctl=systemctl
-  alias jctl=journalctl
+  alias sctl="$KRR_SUDO systemctl"
+  alias jctl="$KRR_SUDO journalctl"
 fi
 
 _nohup_entry() {
@@ -76,3 +74,10 @@ _nohup_entry() {
 in_path clion && alias clion='_nohup_entry clion'
 in_path pycharm && alias pycharm='_nohup_entry pycharm'
 in_path webstorm && alias webstorm='_nohup_entry webstorm'
+
+_chrome_entry() {
+  _nohup_entry "$@" --proxy-server=socks://127.0.0.1:10807
+}
+
+in_path cider && alias cider='_chrome_entry cider'
+in_path todoist && alias todoist='_chrome_entry todoist'
