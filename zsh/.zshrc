@@ -1,11 +1,4 @@
 #!/bin/zsh
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-if [[ -r "$cache" ]]; then
-  source "$cache"
-fi
 
 HERE="$HOME/dotfiles/zsh"
 
@@ -17,14 +10,22 @@ alias in_path='whence -p >/dev/null'
 
 . "$HERE/common.sh"
 
-export STARSHIP_CONFIG="$HERE/starship.toml"
-
 if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
   RC=~/dotfiles/dev/$DEV/zshrc
   [ -f "$RC" ] && . "$RC"
   RC=~/dotsecrets/dev/$DEV/zshrc
   [ -f "$RC" ] && . "$RC"
 fi
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "$cache" ]]; then
+  source "$cache"
+fi
+
+export STARSHIP_CONFIG="$HERE/starship.toml"
 
 . "$HERE/aliases.sh"
 

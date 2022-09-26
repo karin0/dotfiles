@@ -6,18 +6,39 @@ else
   KRR_SUDO='sudo'
 fi
 
+_pkg_entry() {
+  if [ -z "$2" ]; then
+    eval "$KRR_SYU"
+  else
+    $KRR_SUDO "$@"
+  fi
+}
+
 if in_path pacman; then
-  alias pac="$KRR_SUDO pacman"
-  alias syu="$KRR_SUDO pacman -Syu"
-  alias autoremove="$KRR_SUDO pacman -Rs $(pacman -Qdtq)"
+  _pacman_autoremove() {
+    local s
+    if s="$(pacman -Qdtq)" && [ -n "$s" ]; then
+      $KRR_SUDO pacman -Rs "$s"
+    fi
+  }
+  KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
+  alias pac="_pkg_entry pacman"
+  alias add="$KRR_SUDO pacman -S --needed"
+  alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
 elif in_path apt; then
-  alias syu="$KRR_SUDO apt update && $KRR_SUDO apt upgrade"
+  KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove"
+  alias apt="_pkg_entry apt"
+  alias pac="_pkg_entry apt"
+  alias add="$KRR_SUDO apt install"
   alias autoremove="$KRR_SUDO apt autoremove"
 elif in_path apk; then
-  alias syu="$KRR_SUDO apk -U upgrade"
+  KRR_SYU="$KRR_SUDO apk -U upgrade"
+  alias apk="_pkg_entry apt"
+  alias pac="_pkg_entry apt"
+  alias add="$KRR_SUDO apk add"
+else
+  unset -f _pkg_entry
 fi
-
-unset KRR_SUDO
 
 if in_path exa; then
   alias ls='exa -a --icons'
