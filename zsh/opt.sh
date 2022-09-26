@@ -76,7 +76,7 @@ in_path pycharm && alias pycharm='_nohup_entry pycharm'
 in_path webstorm && alias webstorm='_nohup_entry webstorm'
 
 _chrome_entry() {
-  _nohup_entry "$@" --proxy-server=socks://127.0.0.1:10807
+  _nohup_entry "$@" --proxy-server=socks5://127.0.0.1:10807
 }
 
 in_path cider && alias cider='_chrome_entry cider'
