@@ -9,8 +9,8 @@ alias px='HTTP_PROXY=$KRR_PROXY HTTPS_PROXY=$KRR_PROXY ALL_PROXY=$KRR_PROXY'
 alias epx='[ -n "$KRR_PROXY" ] && export HTTP_PROXY=$KRR_PROXY HTTPS_PROXY=$KRR_PROXY ALL_PROXY=$KRR_PROXY'
 alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY'
 
-alias gc='git commit -m'
-alias gca='git commit -am'
+alias gcm='git commit -m'
+alias gcam='git commit -am'
 alias gs='git status'
 alias gd='git diff'
 alias ga='git add'
@@ -22,11 +22,7 @@ mkcd () {
 }
 
 sva() {
-	if [ -n "$1" ]; then
-		base="$1"
-	else
-		base=.
-	fi
+	local base="${1:-.}"
 	if [ -x "$base/bin/python" ]; then
 		. "$base/bin/activate"
 	elif [ -x "$base/venv/bin/python" ]; then

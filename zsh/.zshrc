@@ -1,5 +1,10 @@
 #!/bin/zsh
 
+if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
+  RC=~/dotfiles/dev/$DEV/zshrc
+  [ -f "$RC" ] && . "$RC"
+fi
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -49,21 +54,12 @@ if [ ! -v KRR_PROXY ]; then
   export KRR_PROXY=http://127.0.0.1:10807
 fi
 
-export STARSHIP_CONFIG="$HERE/starship.toml"
-
-if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
-  RC=~/dotfiles/dev/$DEV/zshrc
-  [ -f "$RC" ] && . "$RC"
-fi
-
 HERE="$HOME/dotfiles/zsh"
 
-if [ "$KRR_STAR" != 1 ]; then
-  # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-  . "$HERE/p10k.zsh"
-  zinit ice depth=1
-  zinit light romkatv/powerlevel10k
-fi
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+. "$HERE/p10k.zsh"
+zinit ice depth=1
+zinit light romkatv/powerlevel10k
 
 # zinit ice lucid wait
 zinit light zsh-users/zsh-completions
@@ -111,8 +107,6 @@ bindkey . rationalise-dot
 bindkey -M isearch . self-insert
 
 in_path zoxide && eval "$(zoxide init zsh)"
-
-[ "$KRR_STAR" = 1 ] && in_path starship && eval "$(starship init zsh)"
 
 if [ -n DEV ]; then
   RC=~/dotsecrets/dev/$DEV/zshrc
