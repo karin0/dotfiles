@@ -16,6 +16,14 @@ alias gd='git diff'
 alias ga='git add'
 # alias gaa='git status && read && git add .'
 
+pwd() {
+	if [ -n "$1" ] && [[ "$1" != -* ]]; then
+		realpath "$@"
+	else
+		command pwd "$@"
+	fi
+}
+
 mkcd () {
     mkdir -p -- "$1" && \
     cd -P -- "$1"
