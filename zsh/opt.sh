@@ -27,14 +27,12 @@ if in_path pacman; then
   alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
 elif in_path apt; then
   KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove"
-  alias apt="_pkg_entry apt"
   alias pac="_pkg_entry apt"
   alias add="$KRR_SUDO apt install"
   alias autoremove="$KRR_SUDO apt autoremove"
 elif in_path apk; then
   KRR_SYU="$KRR_SUDO apk -U upgrade"
-  alias apk="_pkg_entry apt"
-  alias pac="_pkg_entry apt"
+  alias pac="_pkg_entry apk"
   alias add="$KRR_SUDO apk add"
 else
   unset -f _pkg_entry
