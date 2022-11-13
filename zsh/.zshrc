@@ -5,6 +5,16 @@ if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
   [ -f "$RC" ] && . "$RC"
 fi
 
+check_battery() {
+  local bat="$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
+  if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
+    echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
+  fi
+}
+
+alias in_path='whence -p >/dev/null'
+in_path upower && check_battery
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -34,8 +44,6 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
 
-alias in_path='whence -p >/dev/null'
-
 if in_path vim; then
   export VISUAL=vim
   export EDITOR=vim
@@ -44,7 +52,7 @@ elif in_path vi; then
   export EDITOR=vi
 fi
 
-export PATH="$HOME/dotfiles/bin:$HOME/lark/bin:$HOME/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH"
+export PATH="$HOME/dotfiles/bin:$HOME/lark/bin:$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH"
 
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh_TW:en_US
@@ -52,6 +60,12 @@ export LANGUAGE=zh_CN:zh_TW:en_US
 # Allow overridden by environment
 if [ ! -v KRR_PROXY ]; then
   export KRR_PROXY=http://127.0.0.1:10807
+fi
+
+if [ "$USER" = root ] || [ -v TERMUX_VERSION ] || ! in_path sudo ; then
+  KRR_SUDO=''
+else
+  KRR_SUDO='sudo'
 fi
 
 HERE="$HOME/dotfiles/zsh"

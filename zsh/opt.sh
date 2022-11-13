@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if [ "$USER" = root ] || [ -v TERMUX_VERSION ] || ! in_path sudo ; then
-  KRR_SUDO=''
-else
-  KRR_SUDO='sudo'
-fi
-
 _pkg_entry() {
   if [ -z "$2" ]; then
     eval "$KRR_SYU"
