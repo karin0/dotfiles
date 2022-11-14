@@ -71,6 +71,9 @@ fi
 
 HERE="$HOME/dotfiles/zsh"
 
+. "$HERE/aliases.sh"
+. "$HERE/opt.sh"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 . "$HERE/p10k.zsh"
 zinit ice depth=1
@@ -78,8 +81,11 @@ zinit light romkatv/powerlevel10k
 
 # zinit ice lucid wait
 zinit light zsh-users/zsh-completions
-
-zinit ice lucid wait atinit='zpcompinit'
+if [ -n $KRR_PKG ]; then
+  zinit ice lucid wait atinit="zpcompinit && compdef pac=$KRR_PKG"
+else
+  zinit ice lucid wait atinit='zpcompinit'
+fi
 
 if in_path fzf; then
   zinit light Aloxaf/fzf-tab
@@ -103,9 +109,6 @@ YSU_MODE=ALL
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-
-. "$HERE/aliases.sh"
-. "$HERE/opt.sh"
 
 rationalise-dot() {
   local MATCH # keep the regex match from leaking to the environment

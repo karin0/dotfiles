@@ -1,10 +1,10 @@
 #!/bin/bash
 
-_pkg_entry() {
-  if [ -z "$2" ]; then
+pac() {
+  if [ -z "$1" ]; then
     eval "$KRR_SYU"
   else
-    $KRR_SUDO "$@"
+    $KRR_SUDO "$KRR_PKG" "$@"
   fi
 }
 
@@ -15,21 +15,22 @@ if in_path pacman; then
       echo "$s" | $KRR_SUDO pacman -Rs -
     fi
   }
+  KRR_PKG=pacman
   KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
-  alias pac="_pkg_entry pacman"
   alias add="$KRR_SUDO pacman -S --needed"
   alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
 elif in_path apt; then
+  KRR_PKG=apt
   KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove"
-  alias pac="_pkg_entry apt"
   alias add="$KRR_SUDO apt install"
   alias autoremove="$KRR_SUDO apt autoremove"
 elif in_path apk; then
+  KRR_PKG=apk
   KRR_SYU="$KRR_SUDO apk -U upgrade"
-  alias pac="_pkg_entry apk"
   alias add="$KRR_SUDO apk add"
 else
-  unset -f _pkg_entry
+  KRR_PKG=
+  unset -f krr_pkg_entry
 fi
 
 if in_path exa; then
