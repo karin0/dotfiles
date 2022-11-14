@@ -6,7 +6,8 @@ if DEV=$(cat ~/dotfiles/devid 2>/dev/null); then
 fi
 
 check_battery() {
-  local bat="$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
+  local bat="$(upower -e | grep -m 1 BAT)"
+  bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
   if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
     echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
   fi

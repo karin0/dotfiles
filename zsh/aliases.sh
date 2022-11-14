@@ -44,3 +44,25 @@ sva() {
 		return 1
 	fi
 }
+
+pycclean() {
+	local a="$(find . -regex '^.*\(__pycache__\|\.py[co]\)$' $* -name site-packages -prune -name .git -name venv)"
+    echo $a
+}
+
+disable-xinput-dev() {
+  local s="$1"
+  if [ -z "$s" ]; then
+    echo "Usage: disable-xinput-dev <device name>"
+    return 1
+  fi
+  local id
+  if ! id=$(xinput list | sed -n 's/.*'"$1"'.*id=\([0-9][0-9]*\).*/\1/p'); then
+    return $?
+  fi
+  if [ -z "$id" ]; then
+    echo "$s is not found"
+    return 2
+  fi
+  xinput disable "$id" && echo "Disabled $id"
+}
