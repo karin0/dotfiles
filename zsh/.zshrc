@@ -30,9 +30,6 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 ### End of Zinit's installer chunk
 
-zinit ice lucid wait atload='_zsh_autosuggest_start'
-zinit light zsh-users/zsh-autosuggestions
-
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -79,34 +76,39 @@ HERE="$HOME/dotfiles/zsh"
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
-# zinit ice lucid wait
-zinit light zsh-users/zsh-completions
 if [ -n $KRR_PKG ]; then
-  zinit ice lucid wait atinit="zpcompinit && compdef pac=$KRR_PKG"
+  KRR_INIT="; compdef pac=$KRR_PKG"
 else
-  zinit ice lucid wait atinit='zpcompinit'
+  KRR_INIT=
 fi
+
+zinit wait lucid for \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay$KRR_INIT" \
+    zdharma-continuum/fast-syntax-highlighting \
+ blockf \
+    zsh-users/zsh-completions \
+ atload"!_zsh_autosuggest_start" \
+    zsh-users/zsh-autosuggestions
 
 if in_path fzf; then
   zinit light Aloxaf/fzf-tab
 fi
-
-zinit snippet OMZ::lib/history.zsh
 
 if in_path svn; then
   zinit ice svn
   zinit snippet OMZ::plugins/extract
 fi
 
+zinit snippet OMZ::lib/history.zsh
 zinit light MichaelAquilina/zsh-you-should-use
-
-zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-history-substring-search
 
+ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 YSU_MESSAGE_POSITION=after
 YSU_MODE=ALL
 
+bindkey '^F' forward-word
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
