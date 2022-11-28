@@ -16,7 +16,11 @@ if in_path pacman; then
     fi
   }
   KRR_PKG=pacman
-  KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
+  if in_path paru; then
+    KRR_SYU="px paru -Syu --skipreview && _pacman_autoremove"
+  else
+    KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
+  fi
   alias add="$KRR_SUDO pacman -S --needed"
   alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
 elif in_path apt; then
