@@ -57,8 +57,9 @@ export LANGUAGE=zh_CN:zh_TW:en_US
 
 # Allow overridden by environment
 if [ ! -v KRR_PROXY ]; then
-  export KRR_PROXY=http://127.0.0.1:10807
+  KRR_PROXY=http://127.0.0.1:10807
 fi
+export KRR_PROXY
 
 if [ "$USER" = root ] || [ -v TERMUX_VERSION ] || ! in_path sudo ; then
   KRR_SUDO=''
@@ -102,6 +103,9 @@ fi
 zinit snippet OMZ::lib/history.zsh
 zinit light MichaelAquilina/zsh-you-should-use
 zinit light zsh-users/zsh-history-substring-search
+
+zinit ice depth=1
+zinit light jeffreytse/zsh-vi-mode
 
 ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
