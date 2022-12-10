@@ -50,7 +50,7 @@ elif in_path vi; then
   export EDITOR=vi
 fi
 
-export PATH="$HOME/dotfiles/bin:$HOME/lark/bin:$HOME/bin:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.yarn/bin:$PATH"
+export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.yarn/bin:$HOME/.local/bin:$PATH"
 
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh_TW:en_US
@@ -77,14 +77,19 @@ HERE="$HOME/dotfiles/zsh"
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
 
+KRR_COMP=
 if [ -n $KRR_PKG ]; then
-  KRR_INIT="; compdef pac=$KRR_PKG"
-else
-  KRR_INIT=
+  KRR_COMP+="; compdef pac=$KRR_PKG"
+fi
+if in_path kubectl; then
+  KRR_COMP+='; source <(kubectl completion zsh)'
+fi
+if in_path zoxide; then
+  KRR_COMP+='; eval "$(zoxide init zsh)"'
 fi
 
 zinit wait lucid for \
- atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay$KRR_INIT" \
+ atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay$KRR_COMP" \
     zdharma-continuum/fast-syntax-highlighting \
  blockf \
     zsh-users/zsh-completions \
@@ -129,8 +134,6 @@ rationalise-dot() {
 zle -N rationalise-dot
 bindkey . rationalise-dot
 bindkey -M isearch . self-insert
-
-in_path zoxide && eval "$(zoxide init zsh)"
 
 if [ -n DEV ]; then
   RC=~/dotsecrets/dev/$DEV/zshrc
