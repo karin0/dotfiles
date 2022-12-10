@@ -57,7 +57,11 @@ export LANGUAGE=zh_CN:zh_TW:en_US
 
 # Allow overridden by environment
 if [ ! -v KRR_PROXY ]; then
-  KRR_PROXY=http://127.0.0.1:10807
+  if in_path nc && nc -z 127.0.0.1 10808; then
+    KRR_PROXY=http://127.0.0.1:10808
+  else
+    KRR_PROXY=http://127.0.0.1:10807
+  fi
 fi
 export KRR_PROXY
 
