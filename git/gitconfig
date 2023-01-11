@@ -2,3 +2,5 @@ user.email=karin0@gmx.com
 user.name=karin0
 commit.gpgsign=true
 init.defaultbranch=main
+core.autocrlf=input
+core.quotepath=false

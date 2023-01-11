@@ -25,9 +25,9 @@ if in_path pacman; then
   alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
 elif in_path apt; then
   KRR_PKG=apt
-  KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove"
+  KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove --purge"
   alias add="$KRR_SUDO apt install"
-  alias autoremove="$KRR_SUDO apt autoremove"
+  alias autoremove="$KRR_SUDO apt autoremove --purge"
 elif in_path apk; then
   KRR_PKG=apk
   KRR_SYU="$KRR_SUDO apk -U upgrade"
@@ -71,6 +71,7 @@ _nohup_entry() {
 in_path clion && alias clion='_nohup_entry clion'
 in_path pycharm && alias pycharm='_nohup_entry pycharm'
 in_path webstorm && alias webstorm='_nohup_entry webstorm'
+in_path netease-cloud-music && alias ncm='_nohup_entry netease-cloud-music --force-device-scale-factor=2'
 
 _chrome_entry() {
   _nohup_entry "$@" --proxy-server=socks5://127.0.0.1:10807

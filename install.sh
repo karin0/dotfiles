@@ -28,7 +28,7 @@ in_path() {
   type -P "$@"
 }
 
-in_path zsh && add zsh/.zshrc ~/.zshrc
+in_path zsh && add zsh/zshrc.zsh ~/.zshrc
 in_path vim && add vim/vimrc ~/.vimrc
 # in_path fish && add fish/config.fish ~/.config/fish/config.fish
 
