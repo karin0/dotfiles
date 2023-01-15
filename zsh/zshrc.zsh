@@ -39,7 +39,9 @@ SAVEHIST=10000000
 
 export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.yarn/bin:$HOME/.local/bin:$PATH"
 
-if in_path vim; then
+if in_path nvim; then
+  export VISUAL=nvim EDITOR=nvim
+elif in_path vim; then
   export VISUAL=vim EDITOR=vim
 elif in_path vi; then
   export VISUAL=vi EDITOR=vi
@@ -58,8 +60,12 @@ fi
 
 # Allow overridden by environment
 if [ ! -v KRR_PROXY ]; then
-  if in_path nc && nc -z 127.0.0.1 10808; then
-    KRR_PROXY=http://127.0.0.1:10808
+  if in_path nc; then
+    if nc -z 127.0.0.1 10808; then
+      KRR_PROXY=http://127.0.0.1:10808
+    elif nc -z 127.0.0.1 10807; then
+      KRR_PROXY=http://127.0.0.1:10807
+    fi
   else
     KRR_PROXY=http://127.0.0.1:10807
   fi
@@ -104,7 +110,6 @@ _post_plugin() {
   bindkey -M isearch . self-insert
 }
 
-epx
 zinit light-mode depth=1 for \
   romkatv/powerlevel10k \
   zdharma-continuum/fast-syntax-highlighting \
@@ -128,10 +133,11 @@ zinit snippet OMZP::extract
 
 zinit ice depth=1 wait='0' atinit='_post_plugin'
 zinit snippet OMZ::lib/history.zsh
-unepx
 
-if [ -n DEV ]; then
-  RC=~/dotsecrets/dev/$DEV/zshrc
-  [ -f "$RC" ] && . "$RC"
+HERE="${XDG_CONFIG_HOME:=$HOME/.config}/dotfiles/zsh.d"
+if [ -d "$HERE" ]; then
+  for i in "$HERE"/*; do
+    . "$i"
+  done
 fi
-unset HERE DEV RC
+unset HERE

@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -e
 
 HERE="$(dirname "$(realpath "$0")")"
@@ -12,11 +11,10 @@ add() {
       echo "$file is already installed."
       return
     fi
-    size=$(stat -c%s -- "$file")
-    if [ "$size" -eq 0 ]; then
+    if ! [ -s "$file" ]; then
       rm -- "$file"
     else
-      echo "$file ($size B) already exists, skipping."
+      echo "$file already exists, skipping."
       return
     fi
   fi
@@ -30,7 +28,6 @@ in_path() {
 
 in_path zsh && add zsh/zshrc.zsh ~/.zshrc
 in_path vim && add vim/vimrc ~/.vimrc
-# in_path fish && add fish/config.fish ~/.config/fish/config.fish
 
 if [ -f ~/dotsecrets/install.sh ]; then
   HERE=~/dotsecrets
