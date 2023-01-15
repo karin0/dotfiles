@@ -17,9 +17,11 @@ if in_path pacman; then
   }
   KRR_PKG=pacman
   if in_path paru; then
-    KRR_SYU="px paru -Syu --skipreview && _pacman_autoremove"
+    KRR_SYU='px paru -Syu --skipreview && _pacman_autoremove'
+    alias paclean='yes | px paru -Scc'
   else
     KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
+    alias paclean="yes | $KRR_SUDO pacman -Scc"
   fi
   alias add="$KRR_SUDO pacman -S --needed"
   alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
@@ -28,6 +30,7 @@ elif in_path apt; then
   KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove --purge"
   alias add="$KRR_SUDO apt install"
   alias autoremove="$KRR_SUDO apt autoremove --purge"
+  alias paclean="$KRR_SUDO apt clean"
 elif in_path apk; then
   KRR_PKG=apk
   KRR_SYU="$KRR_SUDO apk -U upgrade"
