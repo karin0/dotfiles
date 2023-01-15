@@ -5,9 +5,11 @@ alias mv='mv -iv'
 
 alias lt='ls -lAhtr'
 
-alias px='HTTP_PROXY=$KRR_PROXY HTTPS_PROXY=$KRR_PROXY ALL_PROXY=$KRR_PROXY'
-alias epx='[ -n "$KRR_PROXY" ] && export HTTP_PROXY=$KRR_PROXY HTTPS_PROXY=$KRR_PROXY ALL_PROXY=$KRR_PROXY'
-alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY'
+px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY="$KRR_PROXY" {http,https,all}_proxy="$KRR_PROXY" {NO_PROXY,no_proxy}=localhost)"
+alias px="$px_vars"
+alias epx='[ -n "$KRR_PROXY" ] && export '"$px_vars"
+alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY'
+unset px_vars
 
 alias gcm='git commit -m'
 alias gcam='git commit -am'
