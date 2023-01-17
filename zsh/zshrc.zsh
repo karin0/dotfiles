@@ -11,12 +11,17 @@ check_battery() {
 alias in_path='whence -p >/dev/null'
 in_path upower && check_battery
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-if [[ -r "$cache" ]]; then
-  source "$cache"
+if [ -z "$KRR_RELOAD" ]; then
+  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+  # Initialization code that may require console input (password prompts, [y/n]
+  # confirmations, etc.) must go above this block; everything else may go below.
+  cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  if [[ -r "$cache" ]]; then
+    source "$cache"
+  fi
+  unset cache
+else
+  unset KRR_RELOAD
 fi
 
 ### Added by Zinit's installer
@@ -51,9 +56,12 @@ export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh_TW:en_US
 
 if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
-  alias updategpg='export GPG_TTY=$(tty); echo UPDATESTARTUPTTY | gpg-connect-agent >/dev/null'
-  gpg-connect-agent /bye
-  updategpg
+  updategpg() {
+    export GPG_TTY=$(tty)
+    echo UPDATESTARTUPTTY | gpg-connect-agent
+  }
+  gpg-connect-agent /bye 2>/dev/null
+  updategpg >/dev/null
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   KRR_PROXY=
 fi

@@ -16,10 +16,11 @@ alias gcam='git commit -am'
 alias gs='git status'
 alias gd='git diff'
 alias ga='git add'
-# alias gaa='git status && read && git add .'
 
 alias mnt2="$KRR_SUDO"' mount -t ntfs3 -o ro,uid=$UID,gid=$GID'
 alias mnt3="$KRR_SUDO"' mount -t ntfs3 -o rw,uid=$UID,gid=$GID'
+
+alias reload='KRR_RELOAD=1 exec $0'
 
 pwd() {
 	if [ -n "$1" ] && [[ "$1" != -* ]]; then
