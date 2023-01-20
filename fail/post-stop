@@ -1,12 +1,12 @@
 #!/bin/bash
 echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 
-if [ "$USER" = root ]; then
-  sctl='systemctl'
-  kpush='/home/karin0/bin/kpush'
-else
+if [[ $0 = /home/* ]]; then
   sctl='systemctl --user'
   kpush=~/bin/kpush
+else
+  sctl=systemctl
+  kpush=/opt/dotfiles/kpush
 fi
 
 # [ "$SERVICE_RESULT" = success ] && [ "$EXIT_CODE" = killed ] && exit
