@@ -1,0 +1,15 @@
+#!/bin/bash
+echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
+
+if [ "$USER" = root ]; then
+  sctl='systemctl'
+  kpush='/home/karin0/bin/kpush'
+else
+  sctl='systemctl --user'
+  kpush=~/bin/kpush
+fi
+
+# [ "$SERVICE_RESULT" = success ] && [ "$EXIT_CODE" = killed ] && exit
+[ "$EXIT_STATUS" = 0 ] && [ "$($sctl show "$1" --property=Type)" = "Type=oneshot" ] && exit
+
+$sctl status "$1" | $kpush -t "<b>$1: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS</b>  #fail"
