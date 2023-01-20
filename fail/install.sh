@@ -7,9 +7,14 @@ mkdir -p $dir
 add fail.conf $dir/fail.conf
 systemctl --user daemon-reload
 
+if ! [ -d /opt/dotfiles ]; then
+  sudo mkdir /opt/dotfiles
+  sudo chown -R "$USER:$USER" /opt/dotfiles
+fi
+cp -v post-stop ~/bin/kpush /opt/dotfiles/
+
 dir=/etc/systemd/system/service.d
-sudo mkdir -p $dir /opt/dotfiles
-sudo cp -v post-stop ~/bin/kpush /opt/dotfiles/
+sudo mkdir -p $dir
 
 ADD_SUDO=sudo
 ADD_LN='cp -nv'

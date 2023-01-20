@@ -1,15 +1,21 @@
 #!/bin/bash
 echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 
-if [[ $0 = /home/* ]]; then
-  sctl='systemctl --user'
-  kpush=~/bin/kpush
-else
-  sctl=systemctl
+[ "$4" = user ] || [ "$4" = user-runtime-dir ] && exit
+user="$1"
+host="$2"
+unit="$3"
+full="$5"
+
+if [ "$user" = root ]; then
   kpush=/opt/dotfiles/kpush
+else
+  flags=--user
+  kpush=~/bin/kpush
+  host="$user@$host"
 fi
 
 # [ "$SERVICE_RESULT" = success ] && [ "$EXIT_CODE" = killed ] && exit
-[ "$EXIT_STATUS" = 0 ] && [ "$($sctl show "$1" --property=Type)" = "Type=oneshot" ] && exit
+[ "$EXIT_STATUS" = 0 ] && [ "$(systemctl $flags show "$full" --property=Type)" = "Type=oneshot" ] && exit
 
-$sctl status "$1" | $kpush -t "<b>$1: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS</b>  #fail"
+systemctl $flags status "$full" | $kpush -t "<b>$host: $unit: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS</b>  #fail"
