@@ -42,10 +42,12 @@ fi
 
 if in_path exa; then
   alias ls='exa -aF --icons'
-  alias ll='exa -alF --git --time-style iso --icons'
+  alias ll='ls -l --git --time-style iso'
+  alias lt='command ls -lAhtrF --color=auto'
 else
-  alias ls='ls --color=auto -aF'
-  alias ll='ls --color=auto -alhF'
+  alias ls='ls --color=auto -AF'
+  alias ll='ls -hl'
+  alias lt='ls -lAhtr'
 fi
 
 in_path trash && alias rm='trash-put -v'
@@ -57,8 +59,8 @@ in_path bat && alias cat=bat
 
 BASE16_SHELL="$HOME/clones/base16-shell/"
 [ -n "$PS1" ] && \
-    [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-        eval "$("$BASE16_SHELL/profile_helper.sh")"
+  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
+      eval "$("$BASE16_SHELL/profile_helper.sh")"
 
 if in_path systemctl; then
   alias sutl='systemctl --user'

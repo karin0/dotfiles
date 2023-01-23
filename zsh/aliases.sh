@@ -3,8 +3,6 @@
 alias cp='cp -iv'
 alias mv='mv -iv'
 
-alias lt='ls -lAhtr'
-
 px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY="$KRR_PROXY" {http,https,all}_proxy="$KRR_PROXY" {NO_PROXY,no_proxy}=localhost)"
 alias px="$px_vars"
 alias epx='[ -n "$KRR_PROXY" ] && export '"$px_vars"
@@ -13,6 +11,7 @@ unset px_vars
 
 alias gc='git commit'
 alias gcm='git commit -m'
+alias gcam='git commit -am'
 alias gs='git status'
 alias gd='git diff'
 alias ga='git add'
@@ -31,8 +30,8 @@ pwd() {
 }
 
 mkcd () {
-    mkdir -p -- "$1" && \
-    cd -P -- "$1"
+  mkdir -p -- "$1" && \
+  cd -P -- "$1"
 }
 
 sva() {
