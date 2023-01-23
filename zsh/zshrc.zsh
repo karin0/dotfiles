@@ -1,15 +1,14 @@
 #!/bin/zsh
 
-check_battery() {
+alias in_path='whence -p >/dev/null'
+if in_path upower; then
   local bat="$(upower -e | grep -m 1 BAT)"
   bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
   if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
     echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
   fi
-}
-
-alias in_path='whence -p >/dev/null'
-in_path upower && check_battery
+  unset bat
+fi
 
 if [ -z "$KRR_RELOAD" ]; then
   # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -88,7 +87,7 @@ HERE="$HOME"/dotfiles/zsh
 . "$HERE"/aliases.sh
 . "$HERE"/opt.sh
 
-ZSH_AUTOSUGGEST_STRATEGY=match_prev_cmd
+ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 YSU_MESSAGE_POSITION=after
 YSU_MODE=ALL
