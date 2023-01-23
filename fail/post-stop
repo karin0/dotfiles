@@ -15,7 +15,11 @@ else
   host="$user@$host"
 fi
 
-# [ "$SERVICE_RESULT" = success ] && [ "$EXIT_CODE" = killed ] && exit
 [ "$EXIT_STATUS" = 0 ] && [ "$(systemctl $flags show "$full" --property=Type)" = "Type=oneshot" ] && exit
 
-systemctl $flags status "$full" | $kpush -t "<b>$host: $unit: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS</b>  #fail"
+host+=": $unit: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
+if [ "$SERVICE_RESULT" = success ]; then
+  $kpush -t "$host  #fail" ''
+else
+  systemctl $flags status "$full" | $kpush -t "<b>$host</b>  #fail"
+fi
