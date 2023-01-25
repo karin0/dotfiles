@@ -4,4 +4,3 @@ commit.gpgsign=true
 init.defaultbranch=main
 core.autocrlf=input
 core.quotepath=false
-pull.rebase=true
