@@ -10,6 +10,12 @@ if in_path upower; then
   unset bat
 fi
 
+if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
+  export GPG_TTY=$(tty)
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  KRR_PROXY=
+fi
+
 if [ -z "$KRR_RELOAD" ]; then
   # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
   # Initialization code that may require console input (password prompts, [y/n]
@@ -53,17 +59,6 @@ fi
 
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh_TW:en_US
-
-if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
-  updategpg() {
-    export GPG_TTY=$(tty)
-    echo UPDATESTARTUPTTY | gpg-connect-agent
-  }
-  gpg-connect-agent /bye 2>/dev/null
-  updategpg >/dev/null
-  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  KRR_PROXY=
-fi
 
 # Allow overridden by environment
 if [ ! -v KRR_PROXY ]; then
