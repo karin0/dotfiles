@@ -57,11 +57,6 @@ in_path bat && alias cat=bat
 # alias ls='lsd -A'
 # alias ll='lsd -Al --date "+%F %T"'
 
-BASE16_SHELL="$HOME/clones/base16-shell/"
-[ -n "$PS1" ] && \
-  [ -s "$BASE16_SHELL/profile_helper.sh" ] && \
-      eval "$("$BASE16_SHELL/profile_helper.sh")"
-
 if in_path systemctl; then
   alias sutl='systemctl --user'
   alias jutl='journalctl --user'

@@ -1,13 +1,24 @@
 #!/bin/zsh
 
+BASE16_SHELL="$HOME/clones/base16-shell"
+if [[ -n "$PS1" && -s "$BASE16_SHELL/profile_helper.sh" ]]; then
+  . "$BASE16_SHELL/profile_helper.sh"
+fi
+
 alias in_path='whence -p >/dev/null'
+
+if [[ $- == *i* && ! -v TMUX && "$(</proc/$PPID/cmdline)" =~ "terminal" ]] && in_path tmux; then
+  exec tmux -f ~/dotfiles/tmux/tmux.conf
+fi
+
 if in_path upower; then
-  local bat="$(upower -e | grep -m 1 BAT)"
-  bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
-  if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
-    echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
-  fi
-  unset bat
+  () {
+    local bat="$(upower -e | grep -m 1 BAT)"
+    bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
+    if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
+      echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
+    fi
+  }
 fi
 
 if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
@@ -21,7 +32,7 @@ if [ -z "$KRR_RELOAD" ]; then
   # Initialization code that may require console input (password prompts, [y/n]
   # confirmations, etc.) must go above this block; everything else may go below.
   cache="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-  if [[ -r "$cache" ]]; then
+  if [ -r "$cache" ]; then
     source "$cache"
   fi
   unset cache

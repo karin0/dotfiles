@@ -6,8 +6,10 @@ cd "$HERE"
 
 in_path zsh && add zsh/zshrc.zsh ~/.zshrc
 in_path vim && add vim/vimrc ~/.vimrc
+in_path tmux && add tmux/tmux.conf ~/.tmux.conf
 
 if [ -f ~/dotsecrets/install.sh ]; then
   HERE=~/dotsecrets
-  . ~/dotsecrets/install.sh
+  cd "$HERE"
+  . ./install.sh
 fi
