@@ -1,15 +1,6 @@
 #!/bin/zsh
 
-BASE16_SHELL="$HOME/clones/base16-shell"
-if [[ -n "$PS1" && -s "$BASE16_SHELL/profile_helper.sh" ]]; then
-  . "$BASE16_SHELL/profile_helper.sh"
-fi
-
 alias in_path='whence -p >/dev/null'
-
-if [[ $- == *i* && ! -v TMUX && "$(</proc/$PPID/cmdline)" =~ "terminal" ]] && in_path tmux; then
-  exec tmux -f ~/dotfiles/tmux/tmux.conf
-fi
 
 if in_path upower; then
   () {
@@ -39,6 +30,11 @@ if [ -z "$KRR_RELOAD" ]; then
 else
   unset KRR_RELOAD
 fi
+
+# BASE16_SHELL="$HOME/clones/base16-shell"
+# if [[ -n "$PS1" && -s "$BASE16_SHELL/profile_helper.sh" ]]; then
+#   . "$BASE16_SHELL/profile_helper.sh"
+# fi
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -130,7 +126,11 @@ zinit light-mode depth=1 for \
   zsh-users/zsh-autosuggestions \
   zsh-users/zsh-history-substring-search \
   MichaelAquilina/zsh-you-should-use \
-  jeffreytse/zsh-vi-mode
+  jeffreytse/zsh-vi-mode \
+  as"program" pick"$ZPFX/bin/git-*" src"etc/git-extras-completion.zsh" make"PREFIX=$ZPFX" \
+    tj/git-extras \
+  if'[[ -v TERMUX_VERSION || "$(</proc/$PPID/cmdline)" =~ "terminal|login" ]]' \
+    chriskempson/base16-shell
 
 zicompinit; zicdreplay
 [ -n $KRR_PKG ] && compdef pac=$KRR_PKG
