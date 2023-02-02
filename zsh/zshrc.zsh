@@ -31,10 +31,10 @@ else
   unset KRR_RELOAD
 fi
 
-# BASE16_SHELL="$HOME/clones/base16-shell"
-# if [[ -n "$PS1" && -s "$BASE16_SHELL/profile_helper.sh" ]]; then
-#   . "$BASE16_SHELL/profile_helper.sh"
-# fi
+if [ "$OSTYPE" = msys ]; then
+  export MSYS=winsymlinks:native
+  . ~/.ssh-pageant-out >/dev/null 2>&1
+fi
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
@@ -127,9 +127,9 @@ zinit light-mode depth=1 for \
   zsh-users/zsh-history-substring-search \
   MichaelAquilina/zsh-you-should-use \
   jeffreytse/zsh-vi-mode \
-  as"program" pick"$ZPFX/bin/git-*" src"etc/git-extras-completion.zsh" make"PREFIX=$ZPFX" \
+  has'make' as"program" pick"$ZPFX/bin/git-*" src"etc/git-extras-completion.zsh" make"PREFIX=$ZPFX" \
     tj/git-extras \
-  if'[[ -v TERMUX_VERSION || "$(</proc/$PPID/cmdline)" =~ "terminal|login" ]]' \
+  if'[[ -v TERMUX_VERSION || "$(</proc/$PPID/cmdline)" =~ "terminal|login" ]] 2>/dev/null' \
     chriskempson/base16-shell
 
 zicompinit; zicdreplay

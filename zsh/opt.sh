@@ -57,25 +57,27 @@ in_path bat && alias cat=bat
 # alias ls='lsd -A'
 # alias ll='lsd -Al --date "+%F %T"'
 
-if in_path systemctl; then
-  alias sutl='systemctl --user'
-  alias jutl='journalctl --user'
-  alias sctl="$KRR_SUDO systemctl"
-  alias jctl="$KRR_SUDO journalctl"
+if [ "$OSTYPE" = linux-gnu ]; then
+  if in_path systemctl; then
+    alias sutl='systemctl --user'
+    alias jutl='journalctl --user'
+    alias sctl="$KRR_SUDO systemctl"
+    alias jctl="$KRR_SUDO journalctl"
+  fi
+
+  _nohup_entry() {
+    nohup "$@" >/dev/null 2>&1 & disown
+  }
+
+  in_path clion && alias clion='_nohup_entry clion'
+  in_path pycharm && alias pycharm='_nohup_entry pycharm'
+  in_path webstorm && alias webstorm='_nohup_entry webstorm'
+  in_path netease-cloud-music && alias ncm='_nohup_entry netease-cloud-music --force-device-scale-factor=2'
+
+  _chrome_entry() {
+    _nohup_entry "$@" --proxy-server=socks5://127.0.0.1:10807
+  }
+
+  in_path cider && alias cider='_chrome_entry cider'
+  in_path todoist && alias todoist='_chrome_entry todoist'
 fi
-
-_nohup_entry() {
-  nohup "$@" >/dev/null 2>&1 & disown
-}
-
-in_path clion && alias clion='_nohup_entry clion'
-in_path pycharm && alias pycharm='_nohup_entry pycharm'
-in_path webstorm && alias webstorm='_nohup_entry webstorm'
-in_path netease-cloud-music && alias ncm='_nohup_entry netease-cloud-music --force-device-scale-factor=2'
-
-_chrome_entry() {
-  _nohup_entry "$@" --proxy-server=socks5://127.0.0.1:10807
-}
-
-in_path cider && alias cider='_chrome_entry cider'
-in_path todoist && alias todoist='_chrome_entry todoist'
