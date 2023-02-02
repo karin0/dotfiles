@@ -9,6 +9,9 @@ alias epx='[ -n "$KRR_PROXY" ] && export '"$px_vars"
 alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY'
 unset px_vars
 
+alias mnt2="$KRR_SUDO"' mount -t ntfs3 -o ro,uid=$UID,gid=$GID'
+alias mnt3="$KRR_SUDO"' mount -t ntfs3 -o rw,uid=$UID,gid=$GID'
+
 alias gc='git commit'
 alias gcm='git commit -m'
 alias gcam='git commit -am'
@@ -16,10 +19,11 @@ alias gs='git status'
 alias gd='git diff'
 alias ga='git add'
 
-alias mnt2="$KRR_SUDO"' mount -t ntfs3 -o ro,uid=$UID,gid=$GID'
-alias mnt3="$KRR_SUDO"' mount -t ntfs3 -o rw,uid=$UID,gid=$GID'
+reload() {
+  KRR_RELOAD=1 exec ${1:-zsh}
+}
 
-alias reload='KRR_RELOAD=1 exec ${0:-zsh}'
+alias reload='reload "${0#-}"'
 
 pwd() {
 	if [ -n "$1" ] && [[ "$1" != -* ]]; then
