@@ -13,6 +13,6 @@ git for-each-ref --format '%(refname) %(upstream:track)' refs/heads \
 if [ -s "$f" ]; then
   "${EDITOR:-vi}" "$f"
   while read -r br; do
-    git branch -D "$br"
+    git branch -d "$br" || true
   done < "$f"
 fi
