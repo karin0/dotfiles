@@ -2,6 +2,7 @@
 
 alias cp='cp -iv'
 alias mv='mv -iv'
+alias ip='ip -c'
 
 px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY="$KRR_PROXY" {http,https,all}_proxy="$KRR_PROXY" {NO_PROXY,no_proxy}=localhost)"
 alias px="$px_vars"
@@ -16,6 +17,7 @@ alias gc='git commit'
 alias gcm='git commit -m'
 alias gcam='git commit -am'
 alias gs='git status'
+alias gsw='git switch'
 alias gd='git diff'
 alias ga='git add'
 
