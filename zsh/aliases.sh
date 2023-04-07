@@ -4,10 +4,10 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias ip='ip -c'
 
-px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY="$KRR_PROXY" {http,https,all}_proxy="$KRR_PROXY" {NO_PROXY,no_proxy}=localhost)"
+px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY='\$KRR_PROXY' {http,https,all}_proxy='\$KRR_PROXY' {NO_PROXY,no_proxy}=localhost)"
 alias px="$px_vars"
 alias epx='[ -n "$KRR_PROXY" ] && export '"$px_vars"
-alias unepx='unset HTTP_PROXY HTTPS_PROXY ALL_PROXY NO_PROXY'
+alias unepx='unset {HTTP,HTTPS,ALL,NO}_PROXY {http,https,all,no}_proxy'
 unset px_vars
 
 alias mnt2="$KRR_SUDO"' mount -t ntfs3 -o ro,uid=$UID,gid=$GID'
