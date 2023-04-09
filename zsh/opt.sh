@@ -50,10 +50,6 @@ else
   alias lt='ls -lAhtr'
 fi
 
-if [ -x ~/dotsecrets/ssh/install.sh ]; then
-  alias ssh='~/dotsecrets/ssh/install.sh; ssh'
-fi
-
 in_path trash && alias rm='trash-put -v'
 in_path proxychains4 && alias pc=proxychains4
 in_path bat && alias cat=bat
