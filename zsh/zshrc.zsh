@@ -110,6 +110,15 @@ rationalise-dot() {
 }
 
 _post_plugin() {
+  bindkey '^[[1;2C' forward-word
+  bindkey '^[[1;2D' backward-word
+
+  bindkey '^[[1;3C' forward-word
+  bindkey '^[[1;3D' backward-word
+
+  bindkey '^[[1;5C' forward-word
+  bindkey '^[[1;5D' backward-word
+
   bindkey '^F' forward-word
   bindkey '^[[A' history-substring-search-up
   bindkey '^[[B' history-substring-search-down
