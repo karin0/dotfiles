@@ -4,7 +4,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias ip='ip -c'
 
-px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY='\$KRR_PROXY' {http,https,all}_proxy='\$KRR_PROXY' {NO_PROXY,no_proxy}=localhost)"
+px_vars="$(eval echo {HTTP,HTTPS,ALL}_PROXY='\$KRR_PROXY' {http,https,all}_proxy='\$KRR_PROXY' {NO_PROXY,no_proxy}=\''localhost,127.0.0.1,10.0.0.*'\')"
 alias px="$px_vars"
 alias epx='[ -n "$KRR_PROXY" ] && export '"$px_vars"
 alias unepx='unset {HTTP,HTTPS,ALL,NO}_PROXY {http,https,all,no}_proxy'
