@@ -5,9 +5,11 @@ alias in_path='whence -p >/dev/null'
 if in_path upower; then
   () {
     local bat="$(upower -e | grep -m 1 BAT)"
-    bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
-    if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
-      echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
+    if [ -n "$bat" ]; then
+      bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
+      if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
+        echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
+      fi
     fi
   }
 fi
