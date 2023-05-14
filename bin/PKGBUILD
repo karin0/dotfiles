@@ -1,0 +1,17 @@
+pkgname=krr-utils-git
+_pkgver=0.0.1
+pkgver=$_pkgver.cfbf64a
+pkgrel=1
+arch=(any)
+
+pkgdesc='Common utilities from krr dotfiles'
+depends=(bash)
+optdepends=(python)
+
+pkgver() {
+  echo "$_pkgver.$(git rev-parse --short HEAD)"
+}
+
+package() {
+  install -Dm755 ../kvpy "$pkgdir/usr/bin/kvpy"
+}

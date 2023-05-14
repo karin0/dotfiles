@@ -1,0 +1,107 @@
+#!/bin/bash
+
+# set a mirror in pip.ini or a proxy first if behind a firewall
+
+set -e
+
+usage() {
+  echo "Usage: $0 [-i interpreter] [-n dir-name] [-r requirements-path] [-g global-name] [-c] [-u] [-- args...]" >&2
+  exit 1
+}
+
+global_dir=~/.kvpy
+
+pybin=python3
+venv=.venv
+reqs=requirements.txt
+global=
+
+check=
+update=
+declare -a args
+
+OPTIND=1
+while [ $OPTIND -le "$#" ]; do
+  if getopts i:n:r:g:cu opt; then
+    case "$opt" in
+      i)
+        [ -z "$OPTARG" ] && usage
+        pybin="$OPTARG"
+        ;;
+      n)
+        [ -z "$OPTARG" ] && usage
+        venv="$OPTARG"
+        ;;
+      r)
+        [ -z "$OPTARG" ] && usage
+        reqs="$OPTARG"
+        ;;
+      g)
+        [ -z "$OPTARG" ] && usage
+        global="$OPTARG"
+        ;;
+      c) check=1 ;;
+      u) update=1 ;;
+      *) usage
+    esac
+  else
+    args+=("${!OPTIND}")
+    ((OPTIND++))
+  fi
+done
+
+vpy="$venv/bin/python"
+
+runit() {
+  if [ "$1" = 1 ]; then
+    "$vpy" -m pip install -U pip wheel setuptools
+    if [ -n "$reqs" ]; then
+      echo "Installing $reqs .." >&2
+      "$vpy" -m pip install -U -r "$reqs"
+    fi
+  fi
+  if [ ${#args[@]} -ne 0 ]; then
+    exec "$vpy" "${args[@]}"
+  fi
+  exit
+}
+
+if [ -x "$vpy" ]; then
+  if [ "$check" != 1 ] || "$vpy" -c 'import pip' >/dev/null; then
+    runit "$update"
+  fi
+  # python major version in system changed?
+  echo "Nuking broken $venv .." >&2
+  if [ -n "$global" ]; then
+    real="$global_dir/$global"
+    dst="$(readlink -- "$venv")"
+    if [ "$dst" != "$real" ]; then
+      echo "Target $dst is not $real ." >&2
+      exit 1
+    fi
+    echo "Nuking target $real .." >&2
+    rm -r -- "$real" "$venv"
+  else
+    if dst="$(readlink -- "$venv")"; then
+      echo "$venv is a symlink to $dst" >&2
+      exit 1
+    fi
+    rm -r -- "$venv"
+  fi
+elif [ -e "$venv" ] || [ -L "$venv" ]; then
+  echo "Non-venv $venv exists, which needs to be removed first." >&2
+  exit 1
+fi
+
+if [ -n "$global" ]; then
+  mkdir -p "$global_dir"
+  real="$global_dir/$global"
+  echo "Creating a new venv with $pybin at $venv -> $real .." >&2
+  "$pybin" -m venv "$real"
+  ln -s "$real" "$venv"
+else
+  echo "Creating a new venv with $pybin at $venv .." >&2
+  "$pybin" -m venv "$venv"
+fi
+
+runit 1
