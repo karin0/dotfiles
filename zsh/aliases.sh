@@ -42,15 +42,13 @@ mkcd () {
 
 sva() {
 	local base="${1:-.}"
-	if [ -x "$base/bin/python" ]; then
-		. "$base/bin/activate"
-	elif [ -x "$base/venv/bin/python" ]; then
-		. "$base/venv/bin/activate"
-	elif [ -x "$base/.vent/bin/python" ]; then
-		. "$base/.vent/bin/activate"
-	else
-		return 1
-	fi
+  for d in '' venv .venv .vent; do
+    if [ -x "$base/$d/bin/python" ]; then
+      . "$base/$d/bin/activate"
+      return
+    fi
+  done
+  return 1
 }
 
 pycclean() {
