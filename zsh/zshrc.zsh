@@ -74,17 +74,8 @@ fi
 
 # Allow overridden by environment
 if [ ! -v KRR_PROXY ]; then
-  if in_path nc; then
-    if nc -z 127.0.0.1 10808; then
-      KRR_PROXY=http://127.0.0.1:10808
-    elif nc -z 127.0.0.1 10807; then
-      KRR_PROXY=http://127.0.0.1:10807
-    fi
-  else
-    KRR_PROXY=http://127.0.0.1:10807
-  fi
+  export KRR_PROXY=http://127.0.0.1:10807
 fi
-export KRR_PROXY
 
 if [ "$USER" != root ] && ! [ -v TERMUX_VERSION ] && in_path sudo; then
   KRR_SUDO='sudo'
