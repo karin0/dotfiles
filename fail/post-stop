@@ -1,6 +1,8 @@
 #!/bin/bash
 echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 
+[ "$SERVICE_RESULT" = success ] && exit
+
 [ "$4" = user ] || [ "$4" = user-runtime-dir ] && exit
 user="$1"
 host="$2"
@@ -14,8 +16,6 @@ else
   kpush=~/bin/kpush
   host="$user@$host"
 fi
-
-[ "$EXIT_STATUS" = 0 ] && [ "$(systemctl $flags show "$full" --property=Type)" = "Type=oneshot" ] && exit
 
 host+=": $unit: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 if [ "$SERVICE_RESULT" = success ]; then
