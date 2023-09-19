@@ -9,17 +9,12 @@ host="$2"
 unit="$3"
 full="$5"
 
-if [ "$user" = root ]; then
-  kpush=/opt/dotfiles/kpush
-else
-  flags=--user
-  kpush=~/bin/kpush
+kpush=/opt/dotfiles/kpush
+systemctl=systemctl
+if [ "$user" != root ]; then
+  systemctl+=' --user'
   host="$user@$host"
 fi
 
 host+=": $unit: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
-if [ "$SERVICE_RESULT" = success ]; then
-  $kpush -t "$host  #fail" ''
-else
-  systemctl $flags status "$full" | $kpush -t "<b>$host</b>  #fail"
-fi
+$systemctl status "$full" | $kpush -t "<b>$host</b>  #fail"

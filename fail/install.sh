@@ -11,13 +11,13 @@ if ! [ -d /opt/dotfiles ]; then
   sudo mkdir /opt/dotfiles
   sudo chown -R "$USER:$USER" /opt/dotfiles
 fi
-cp -v post-stop ~/bin/kpush /opt/dotfiles/
+cp -v post-stop /opt/dotfiles/
 
 dir=/etc/systemd/system/service.d
 sudo mkdir -p $dir
 
 ADD_SUDO=sudo
 ADD_LN='cp -nv'
-add sys-fail.conf $dir/sys-fail.conf
+add fail.conf $dir/fail.conf
 
 sudo systemctl daemon-reload
