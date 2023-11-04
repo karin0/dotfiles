@@ -4,9 +4,12 @@ echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 [ "$SERVICE_RESULT" = success ] && exit
 
 [ "$4" = user ] || [ "$4" = user-runtime-dir ] && exit
+
+unit="$3"
+[[ $unit = *gnome* ]] && exit
+
 user="$1"
 host="$2"
-unit="$3"
 full="$5"
 
 kpush=/opt/dotfiles/kpush
