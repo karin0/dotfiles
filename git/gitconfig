@@ -6,6 +6,7 @@ core.autocrlf=input
 core.quotepath=false
 core.excludesfile=~/.gitignore
 pull.rebase=false
+pull.ff=only
 fetch.prune=true
 alias.msg=!git-msg.py
 alias.tidy=!git-clean.sh
