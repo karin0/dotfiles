@@ -40,15 +40,17 @@ else
   unset -f krr_pkg_entry
 fi
 
-if in_path exa; then
+if in_path eza; then
+  alias ls='eza -aF --icons'
+  alias ll='ls -l --git --time-style iso'
+elif in_path exa; then
   alias ls='exa -aF --icons'
   alias ll='ls -l --git --time-style iso'
-  alias lt='command ls -lAhtrF --color=auto'
 else
   alias ls='ls --color=auto -AF'
   alias ll='ls -hl'
-  alias lt='ls -lAhtr'
 fi
+alias lt='command ls -lAhtrF --color=auto'
 
 in_path trash && alias rm='trash-put -v'
 in_path proxychains4 && alias pc=proxychains4
