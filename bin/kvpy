@@ -18,37 +18,24 @@ global=
 
 check=
 update=
-declare -a args
 
-OPTIND=1
-while [ $OPTIND -le "$#" ]; do
-  if getopts i:n:r:g:cu opt; then
-    case "$opt" in
-      i)
-        [ -z "$OPTARG" ] && usage
-        pybin="$OPTARG"
-        ;;
-      n)
-        [ -z "$OPTARG" ] && usage
-        venv="$OPTARG"
-        ;;
-      r)
-        [ -z "$OPTARG" ] && usage
-        reqs="$OPTARG"
-        ;;
-      g)
-        [ -z "$OPTARG" ] && usage
-        global="$OPTARG"
-        ;;
-      c) check=1 ;;
-      u) update=1 ;;
-      *) usage
-    esac
-  else
-    args+=("${!OPTIND}")
-    ((OPTIND++))
-  fi
+opts=$(getopt -o i:n:r:g:cu -- "$@") || usage
+eval set -- "$opts"
+
+while true; do
+  case "$1" in
+    -i) pybin="$2"; shift ;;
+    -n) venv="$2"; shift ;;
+    -r) reqs="$2"; shift ;;
+    -g) global="$2"; shift ;;
+    -c) check=1 ;;
+    -u) update=1 ;;
+    --) shift; break ;;
+    *) usage ;;
+  esac
+  shift
 done
+args=("$@")
 
 vpy="$venv/bin/python"
 
