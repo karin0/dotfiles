@@ -61,8 +61,10 @@ if [ -x "$vpy" ]; then
   echo "Nuking broken $venv .." >&2
   if [ -n "$global" ]; then
     real="$global_dir/$global"
-    dst="$(readlink -- "$venv")"
-    if [ "$dst" != "$real" ]; then
+    if ! dst="$(readlink -- "$venv")"; then
+      echo "$venv is not a symlink." >&2
+      exit 1
+    elif [ "$dst" != "$real" ]; then
       echo "Target $dst is not $real ." >&2
       exit 1
     fi
