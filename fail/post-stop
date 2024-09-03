@@ -3,10 +3,12 @@ echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 
 [ "$SERVICE_RESULT" = success ] && exit
 
+[ "$EXIT_STATUS" = 0 ] && exit
+
 [ "$4" = user ] || [ "$4" = user-runtime-dir ] && exit
 
 unit="$3"
-[[ $unit = *gnome* ]] || [[ $unit = dbus-:* ]] || [[ $unit = archlinux-keyring-wkd-sync ]] && exit
+[[ $unit = *gnome* ]] || [[ $unit = dbus-:* ]] || [[ $unit = archlinux-keyring-wkd-sync ]] || [[ $unit = xdg-desktop* ]] || [[ $unit = *dbus-bus ]] && exit
 
 user="$1"
 host="$2"
