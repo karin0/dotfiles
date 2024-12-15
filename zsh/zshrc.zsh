@@ -124,11 +124,20 @@ _post_plugin() {
   bindkey -M isearch . self-insert
 }
 
+_post_comp() {
+  [ -n $KRR_PKG ] && compdef pac=$KRR_PKG
+}
+
+zinit wait lucid light-mode for \
+  atinit"zicompinit; zicdreplay; _post_comp" \
+      zdharma-continuum/fast-syntax-highlighting \
+  atload"_zsh_autosuggest_start" \
+      zsh-users/zsh-autosuggestions \
+  blockf atpull'zinit creinstall -q .' \
+      zsh-users/zsh-completions
+
 zinit light-mode depth=1 for \
   romkatv/powerlevel10k \
-  zdharma-continuum/fast-syntax-highlighting \
-  zsh-users/zsh-completions \
-  zsh-users/zsh-autosuggestions \
   zsh-users/zsh-history-substring-search \
   MichaelAquilina/zsh-you-should-use \
   jeffreytse/zsh-vi-mode \
@@ -137,17 +146,43 @@ zinit light-mode depth=1 for \
   if'[[ -v TERMUX_VERSION || "$(</proc/$PPID/cmdline)" =~ "terminal|login" ]] 2>/dev/null' \
     chriskempson/base16-shell
 
-zicompinit; zicdreplay
-[ -n $KRR_PKG ] && compdef pac=$KRR_PKG
+# https://github.com/zdharma-continuum/zinit/discussions/651
+setopt RE_MATCH_PCRE   # _fix-omz-plugin function uses this regex style
+
+# Workaround for zinit issue#504: remove subversion dependency. Function clones all files in plugin
+# directory (on github) that might be useful to zinit snippet directory. Should only be invoked
+# via zinit atclone"_fix-omz-plugin"
+_fix-omz-plugin() {
+  if [[ ! -f ._zinit/teleid ]] then return 0; fi
+  if [[ ! $(cat ._zinit/teleid) =~ "^OMZP::.*" ]] then return 0; fi
+  local OMZP_NAME=$(cat ._zinit/teleid | sed -n 's/OMZP:://p')
+  git clone --quiet --no-checkout --depth=1 --filter=tree:0 https://github.com/ohmyzsh/ohmyzsh
+  cd ohmyzsh
+  git sparse-checkout set --no-cone plugins/$OMZP_NAME
+  git checkout --quiet
+  cd ..
+  local OMZP_PATH="ohmyzsh/plugins/$OMZP_NAME"
+  local file
+  for file in $(ls -a ohmyzsh/plugins/$OMZP_NAME); do
+    if [[ $file == '.' ]] then continue; fi
+    if [[ $file == '..' ]] then continue; fi
+    if [[ $file == '.gitignore' ]] then continue; fi
+    if [[ $file == 'README.md' ]] then continue; fi
+    if [[ $file == "$OMZP_NAME.plugin.zsh" ]] then continue; fi
+    cp $OMZP_PATH/$file $file
+  done
+  rm -rf ohmyzsh
+}
+
+zinit wait lucid for \
+  atclone"_fix-omz-plugin" \
+    OMZP::extract
+
 in_path kubectl && source <(kubectl completion zsh)
 in_path zoxide && eval "$(zoxide init zsh)"
-_zsh_autosuggest_start
 
 zinit ice lucid depth=1 has='fzf'
 zinit light Aloxaf/fzf-tab
-
-zinit ice svn depth=1 has='svn'
-zinit snippet OMZP::extract
 
 zinit ice depth=1 wait='0' atinit='_post_plugin'
 zinit snippet OMZ::lib/history.zsh

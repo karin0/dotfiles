@@ -26,6 +26,7 @@ def get_diff():
         cmd = ['git', 'diff']
         if opt:
             cmd.append(opt)
+        cmd.extend(('--', ':!Cargo.lock'))
         out = subprocess.check_output(cmd, text=True).strip()
         if out:
             return out
@@ -44,7 +45,7 @@ def main():
     config.read(CONFIG_FILE)
 
     openai.api_key = config['openai']['secret_key'].strip('"').strip("'")
-    openai.proxy = 'http://127.0.0.1:10808'
+    openai.proxy = 'http://127.0.0.1:10807'
 
     try:
         sys.argv.remove('-l')
