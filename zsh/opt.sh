@@ -35,9 +35,6 @@ elif in_path apk; then
   KRR_PKG=apk
   KRR_SYU="$KRR_SUDO apk -U upgrade"
   alias add="$KRR_SUDO apk add"
-else
-  KRR_PKG=
-  unset -f krr_pkg_entry
 fi
 
 if in_path eza; then

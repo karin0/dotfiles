@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 HERE="$(dirname "$(realpath "$0")")"
 cd "$HERE"
