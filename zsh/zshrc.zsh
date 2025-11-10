@@ -14,12 +14,6 @@ if in_path upower; then
   }
 fi
 
-if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
-  export GPG_TTY=$(tty)
-  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  KRR_PROXY=
-fi
-
 if [ -z "$KRR_RELOAD" ]; then
   # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
   # Initialization code that may require console input (password prompts, [y/n]
@@ -35,7 +29,7 @@ fi
 
 if [ "$OSTYPE" = msys ]; then
   export MSYS=winsymlinks:native
-  . ~/.ssh-pageant-out >/dev/null 2>&1
+  . ~/.ssh-pageant-out >/dev/null
 fi
 
 ### Added by Zinit's installer
@@ -56,7 +50,21 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
 
-export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.yarn/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.venv/bin:$HOME/.local/bin:/opt/dotfiles:$PATH"
+
+if in_path gpg-connect-agent; then
+  if [ -v TERMUX_VERSION ]; then
+    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
+  fi
+
+  if _krr_tty=$(tty 2>&1); then
+    gtty() {
+      export GPG_TTY="$_krr_tty"
+      gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
+    }
+    gtty
+  fi
+fi
 
 if in_path nvim; then
   export VISUAL=nvim EDITOR=nvim
@@ -73,9 +81,9 @@ if [ "$TERM" != linux ]; then
 fi
 
 # Allow overridden by environment
-if [ ! -v KRR_PROXY ]; then
-  export KRR_PROXY=http://127.0.0.1:10807
-fi
+# if [ ! -v KRR_PROXY ]; then
+#   export KRR_PROXY=http://127.0.0.1:10807
+# fi
 
 if [ "$USER" != root ] && ! [ -v TERMUX_VERSION ] && in_path sudo; then
   KRR_SUDO='sudo'
@@ -83,7 +91,6 @@ fi
 
 HERE="$HOME"/dotfiles/zsh
 . "$HERE"/aliases.sh
-. "$HERE"/opt.sh
 
 ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
@@ -122,6 +129,34 @@ _post_plugin() {
   zle -N rationalise-dot
   bindkey . rationalise-dot
   bindkey -M isearch . self-insert
+
+  function _do_intr {
+    if [[ -n $BUFFER ]]; then
+      zle .send-break
+    fi
+  }
+
+  zle -N _do_intr
+
+  bindkey '^C' _do_intr
+  for m in emacs viins vicmd; do
+    if bindkey -M $m >/dev/null 2>&1; then
+      bindkey -M $m '^C' _do_intr
+    fi
+  done
+
+  function _enable_intr {
+    stty intr '^C'
+  }
+
+  function _disable_intr {
+    stty intr ''
+  }
+
+  autoload -U add-zsh-hook
+  add-zsh-hook preexec _enable_intr
+  add-zsh-hook precmd _disable_intr
+  _disable_intr
 }
 
 _post_comp() {
@@ -184,13 +219,5 @@ in_path zoxide && eval "$(zoxide init zsh)"
 zinit ice lucid depth=1 has='fzf'
 zinit light Aloxaf/fzf-tab
 
-zinit ice depth=1 wait='0' atinit='_post_plugin'
+zinit ice depth=1 wait='0' atinit='_post_plugin' silent=1
 zinit snippet OMZ::lib/history.zsh
-
-HERE="${XDG_CONFIG_HOME:=$HOME/.config}/dotfiles/zsh.d"
-if [ -d "$HERE" ]; then
-  for i in "$HERE"/*; do
-    . "$i"
-  done
-fi
-unset HERE

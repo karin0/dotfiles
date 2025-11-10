@@ -17,8 +17,8 @@ if in_path pacman; then
   }
   KRR_PKG=pacman
   if in_path paru; then
-    KRR_SYU='px paru -Syu --skipreview && _pacman_autoremove'
-    alias paclean='yes | px paru -Scc'
+    KRR_SYU="$KRR_PX paru -Syu --skipreview && _pacman_autoremove"
+    alias paclean="yes | $KRR_PX paru -Scc"
   else
     KRR_SYU="$KRR_SUDO pacman -Syu && _pacman_autoremove"
     alias paclean="yes | $KRR_SUDO pacman -Scc"
@@ -35,13 +35,12 @@ elif in_path apk; then
   KRR_PKG=apk
   KRR_SYU="$KRR_SUDO apk -U upgrade"
   alias add="$KRR_SUDO apk add"
+elif in_path nix; then
+  KRR_SYU=/etc/nixos/update
 fi
 
 if in_path eza; then
-  alias ls='eza -aF --icons'
-  alias ll='ls -l --git --time-style iso'
-elif in_path exa; then
-  alias ls='exa -aF --icons'
+  alias ls='eza -aF --icons auto'
   alias ll='ls -l --git --time-style iso'
 else
   alias ls='ls --color=auto -AF'
@@ -53,15 +52,15 @@ in_path trash && alias rm='trash-put -v'
 in_path proxychains4 && alias pc=proxychains4
 in_path bat && alias cat=bat
 
-# alias ls='lsd -A'
-# alias ll='lsd -Al --date "+%F %T"'
-
 if [ "$OSTYPE" = linux-gnu ]; then
   if in_path systemctl; then
     alias sutl='systemctl --user'
     alias jutl='journalctl --user'
     alias sctl="$KRR_SUDO systemctl"
     alias jctl="$KRR_SUDO journalctl"
+    alias scs='sctl status'
+    alias sus='sutl status'
+    sur() { systemctl --user start "$1" & journalctl --user -f; }
   fi
 
   _nohup_entry() {
