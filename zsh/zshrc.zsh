@@ -27,9 +27,11 @@ else
   unset KRR_RELOAD
 fi
 
-if [ "$OSTYPE" = msys ]; then
+if [ "$MSYSTEM" = MSYS ]; then
   export MSYS=winsymlinks:native
-  . ~/.ssh-pageant-out >/dev/null
+  eval "$(ssh-pageant -r -a \"$temp\ssh-pageant.socket\")" >/dev/null
+  # https://github.com/jeffreytse/zsh-vi-mode/issues/159
+  setopt re_match_pcre
 fi
 
 ### Added by Zinit's installer
@@ -57,7 +59,7 @@ if in_path gpg-connect-agent; then
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   fi
 
-  if _krr_tty=$(tty 2>&1); then
+  if ! [ -v MSYSTEM ] && _krr_tty=$(tty 2>&1); then
     gtty() {
       export GPG_TTY="$_krr_tty"
       gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
@@ -85,7 +87,7 @@ fi
 #   export KRR_PROXY=http://127.0.0.1:10807
 # fi
 
-if [ "$USER" != root ] && ! [ -v TERMUX_VERSION ] && in_path sudo; then
+if [ "$USER" != root ] && ! [ -v TERMUX_VERSION ] && ! [ -v MSYSTEM ] && in_path sudo; then
   KRR_SUDO='sudo'
 fi
 
