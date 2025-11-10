@@ -8,7 +8,8 @@ echo "post-stop: $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS"
 [ "$4" = user ] || [ "$4" = user-runtime-dir ] && exit
 
 unit="$3"
-[[ $unit = *gnome* ]] || [[ $unit = dbus-:* ]] || [[ $unit = archlinux-keyring-wkd-sync ]] || [[ $unit = xdg-desktop* ]] || [[ $unit = *dbus-bus ]] && exit
+[[ $unit = *gnome* ]] || [[ $unit = dbus-:* ]] || [[ $unit = archlinux-keyring-wkd-sync ]] || [[ $unit = xdg-desktop* ]] || [[ $unit = *dbus-bus ]] || \
+  || [ "$unit" = obex ] || [ "$unit" = systemd-networkd-wait-online ] && exit
 
 user="$1"
 host="$2"
