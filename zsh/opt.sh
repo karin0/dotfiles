@@ -54,12 +54,16 @@ in_path bat && alias cat=bat
 
 if [ "$OSTYPE" = linux-gnu ]; then
   if in_path systemctl; then
-    alias sutl='systemctl --user'
-    alias jutl='journalctl --user'
     alias sctl="$KRR_SUDO systemctl"
+    alias sutl='systemctl --user'
     alias jctl="$KRR_SUDO journalctl"
+    alias jutl='journalctl --user'
     alias scs='sctl status'
     alias sus='sutl status'
+    alias scen='sctl enable --now'
+    alias suen='sutl enable --now'
+    alias scds='sctl disable --now'
+    alias suds='sutl disable --now'
     sur() { systemctl --user start "$1" & journalctl --user -f; }
   fi
 

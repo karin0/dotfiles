@@ -52,55 +52,19 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=10000000
 SAVEHIST=10000000
 
-export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.venv/bin:$HOME/.local/bin:/opt/dotfiles:$PATH"
-
-if in_path gpg-connect-agent; then
-  if [ -v TERMUX_VERSION ]; then
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  fi
-
-  if ! [ -v MSYSTEM ] && _krr_tty=$(tty 2>&1); then
-    gtty() {
-      export GPG_TTY="$_krr_tty"
-      gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
-    }
-  fi
-fi
-
-if in_path nvim; then
-  export VISUAL=nvim EDITOR=nvim
-elif in_path vim; then
-  export VISUAL=vim EDITOR=vim
-elif in_path vi; then
-  export VISUAL=vi EDITOR=vi
-fi
-
-# No CJK in Linux console
-if [ "$TERM" != linux ]; then
-  export LANG=zh_CN.UTF-8
-  export LANGUAGE=zh_CN:zh_TW:en_US
-fi
-
-# Allow overridden by environment
-# if [ ! -v KRR_PROXY ]; then
-#   export KRR_PROXY=http://127.0.0.1:10807
-# fi
-
-if [ "$USER" != root ] && ! [ -v TERMUX_VERSION ] && ! [ -v MSYSTEM ] && in_path sudo; then
-  KRR_SUDO='sudo'
-fi
-
-HERE="$HOME"/dotfiles/zsh
-. "$HERE"/aliases.sh
-
 ZSH_AUTOSUGGEST_STRATEGY=(match_prev_cmd completion)
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=9'
 YSU_MESSAGE_POSITION=after
 YSU_MODE=ALL
 ZINIT[COMPINIT_OPTS]=-C
 
+HERE="$HOME"/dotfiles/zsh
+. "$HERE"/common.sh
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 . "$HERE"/p10k.zsh
+
+unset HERE
 
 rationalise-dot() {
   local MATCH # keep the regex match from leaking to the environment
@@ -110,6 +74,12 @@ rationalise-dot() {
     zle self-insert
   else
     zle self-insert
+  fi
+}
+
+function _do_intr {
+  if [[ -n $BUFFER ]]; then
+    zle .send-break
   fi
 }
 
@@ -130,12 +100,6 @@ _post_plugin() {
   zle -N rationalise-dot
   bindkey . rationalise-dot
   bindkey -M isearch . self-insert
-
-  function _do_intr {
-    if [[ -n $BUFFER ]]; then
-      zle .send-break
-    fi
-  }
 
   zle -N _do_intr
 

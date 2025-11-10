@@ -60,5 +60,3 @@ sva() {
 pycclean() {
 	find . -regex '^.*\(__pycache__\|\.py[co]\)$' -o -name .git -prune -name venv -prune -name .vent -prune
 }
-
-. "$HERE"/opt.sh
