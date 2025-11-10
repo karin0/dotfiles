@@ -64,7 +64,6 @@ if in_path gpg-connect-agent; then
       export GPG_TTY="$_krr_tty"
       gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
     }
-    gtty
   fi
 fi
 
