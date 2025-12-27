@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! [ -v hosts ]; then
+  if [ -n "${MSSH_HOSTS:-}" ]; then
+    IFS=',' read -r -a hosts <<< "$MSSH_HOSTS"
+  else
+    hosts=(localhost)
+  fi
+fi
+
+if [ "$#" -eq 0 ]; then
+  echo "Usage: $0 [ssh-opts ...] <command> [argument ...]" >&2
+  exit 1
+fi
+
+argv=("$@")
+
+# Only optimize for local execution if there are no ssh options.
+if [[ "$1" != -* ]]; then
+  me=$(uname -n)
+else
+  me=
+fi
+
+dir=$(mktemp -d)
+trap 'rm -rf "$dir"' EXIT
+
+export LUNA_MUTE=1
+
+worker() {
+  local host=$1
+  local cmd
+  if [ "$host" = "$me" ]; then
+    cd ~
+    cmd=(bash -c "${argv[*]}")
+  else
+    cmd=(ssh "$host" "${argv[@]}")
+  fi
+  local r=0
+  "${cmd[@]}" |& tail -n 10 > "$dir/$host" || r=$?
+  return $r
+}
+
+pids=()
+for host in "${hosts[@]}"; do
+  worker "$host" &
+  pids+=($!)
+done
+
+if [ -t 1 ]; then
+  info() { echo -e "\033[1;34m$*\033[0m" >&2; }
+  error() { echo -e "\033[1;31m$*\033[0m" >&2; }
+else
+  info() { echo "$@" >&2; }
+  error() { echo "$@" >&2; }
+fi
+
+err=0
+for i in "${!pids[@]}"; do
+  host=${hosts[$i]}
+  pid=${pids[$i]}
+  r=0
+  wait "$pid" || r=$?
+  if [ $r -eq 0 ]; then
+    info "=== $host ==="
+  else
+    error "=== $host: $r ==="
+    err=$r
+  fi
+  cat "$dir/$host"
+done
+
+exit $err

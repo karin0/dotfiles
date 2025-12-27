@@ -1,0 +1,24 @@
+#!/bin/bash
+
+set -e
+
+if [ "$1" = -u ]; then
+  unit=1
+  shift
+fi
+
+px="${1:-http://127.0.0.1:10807}"
+
+out() {
+  if [ "$unit" != 1 ]; then
+    echo export HTTP_PROXY="$px" EDITOR=vim VISUAL=vim
+    echo export {HTTPS,ALL}_PROXY='$HTTP_PROXY' {http,https,all}_proxy='$HTTP_PROXY' {NO_PROXY,no_proxy}=localhost
+  else
+    echo '[Service]'
+    echo "Environment=\"HTTP_PROXY=$px\""
+    echo "Environment=\"HTTPS_PROXY=$px\""
+    echo "Environment=\"ALL_PROXY=$px\""
+  fi
+}
+
+out | tee >(xclip -verbose -selection clipboard)
