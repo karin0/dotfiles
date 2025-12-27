@@ -18,9 +18,9 @@ fi
 alias mnt2="$KRR_SUDO"' mount -t ntfs3 -o ro,uid=$UID,gid=$GID'
 alias mnt3="$KRR_SUDO"' mount -t ntfs3 -o rw,uid=$UID,gid=$GID'
 
-alias gc='git commit'
-alias gcm='git commit -m'
-alias gcam='git commit -am'
+alias gc='gtty; git commit'
+alias gcm='gc -m'
+alias gcam='gc -am'
 alias gs='git status'
 alias gsw='git switch'
 alias gd='git diff'

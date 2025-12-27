@@ -12,7 +12,16 @@ if in_path gpg-connect-agent; then
       export GPG_TTY="$_krr_tty"
       gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
     }
+
+    gtty2() {
+      gtty
+      gpg --clearsign < /dev/null
+    }
+  else
+    gtty() { :; }
   fi
+else
+  gtty() { :; }
 fi
 
 if in_path nvim; then

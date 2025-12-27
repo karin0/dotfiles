@@ -65,6 +65,7 @@ if [ "$OSTYPE" = linux-gnu ]; then
     alias scds='sctl disable --now'
     alias suds='sutl disable --now'
     sur() { systemctl --user start "$1" & journalctl --user -f; }
+    surr() { systemctl --user restart "$1" & journalctl --user -f; }
   fi
 
   _nohup_entry() {
