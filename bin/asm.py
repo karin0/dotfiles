@@ -36,9 +36,12 @@ redact_patterns = [
     R(r'private-?key\s*:\s*([A-Za-z0-9+/=]+)'),
 ]
 
-exclude_patterns = set((
+exclude_patterns = {
     '.git',
+    '.idea',
+    '.vscode',
     'node_modules',
+    '.venv',
     '__pycache__',
     '*.pyc',
     '*.pyo',
@@ -47,23 +50,23 @@ exclude_patterns = set((
     '*.old',
     '*.bak',
     'out.txt',
-    '.venv',
-    # '*.toml',
-    'asm',
     '*.pem',
     '*.key',
     '*.crt',
-    'id_rsa',
-    'id_rsa.pub',
-    'id_ed25519',
-    'id_ed25519.pub',
+    'id_rsa*',
+    'id_ed25519*',
+    'id_dsa*',
+    'id_ecdsa*',
     '*.env',
     '*.env.*',
-))
+}
+
+not_nt = os.name != 'nt'
+
 
 def filter_block_comments(content, ext):
     """Filter out block comments based on file extension"""
-    if ext in ('.py', '.pyx'):
+    if ext in ('.py', '.pyx', '.pyi'):
         # Python triple quotes - only match when they start and end at line boundaries with only whitespace
         # Match """ or ''' that start at beginning of line (with optional whitespace) and end similarly
         content = re.sub(
@@ -90,7 +93,7 @@ def read_file(file: PurePath) -> Content:
             print('Binary file detected:', file, file=sys.stderr)
             r = (None, 'binary')
 
-        if os.access(file, os.X_OK):
+        if not_nt and os.access(file, os.X_OK):
             r += ('executable',)
 
     return r
@@ -136,17 +139,13 @@ def walk_dir(
 def retrieve(
     file: PurePath, excluded: Callable[[PurePath], bool | Content]
 ) -> Iterable[tuple[PurePath, Content]]:
-    try:
+    if os.path.islink(file):
         to = os.readlink(file)
-    except OSError:
-        pass
-    else:
         yield file, report_symlink(file, to)
-
-    try:
-        yield file, read_file(file)
-    except IsADirectoryError:
+    elif os.path.isdir(file):
         yield from walk_dir(file, excluded)
+    else:
+        yield file, read_file(file)
 
 
 def main():
@@ -281,7 +280,7 @@ def main():
                         if isinstance(pat, str):
                             content = content.replace(pat, holder)
                         else:
-                            # content = pat.sub(holder, content)
+
                             def sub(m):
                                 # If capturing groups exist, redact only the first group
                                 try:
