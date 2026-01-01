@@ -6,6 +6,12 @@ import re
 from pathlib import PurePath
 from typing import Callable, Iterable
 
+try:
+    from redact import redact
+except ImportError:
+    print('redact.py is unavailable, redaction will be disabled', file=sys.stderr)
+    redact = lambda content: content
+
 c_ext = frozenset(
     (
         '.js',
@@ -23,18 +29,6 @@ c_ext = frozenset(
         '.go',
     )
 )
-
-R = lambda pattern: re.compile(pattern, re.IGNORECASE)
-
-redact_patterns = [
-    R(r'[a-zA-Z0-9._%+-]+@\w+\.com'),
-    R(r'ssh-[\w]+ [A-Za-z0-9+/]+? [A-Za-z0-9+/@:]+'),
-    R(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
-    R(r'"public-?key"\s*:\s*"([A-Za-z0-9+/=]+?)"'),
-    R(r'"private-?key"\s*:\s*"([A-Za-z0-9+/=]+?)"'),
-    R(r'public-?key\s*:\s*([A-Za-z0-9+/=]+)'),
-    R(r'private-?key\s*:\s*([A-Za-z0-9+/=]+)'),
-]
 
 exclude_patterns = {
     '.git',
@@ -269,27 +263,7 @@ def main():
                     print(f'## File: {s_path}')
 
                 if content:
-                    for pat in redact_patterns:
-                        holder = '[redacted]'
-                        if isinstance(pat, tuple):
-                            holder = f'[redacted-{pat[1]}]'
-                            pat = pat[0]
-                        elif isinstance(pat, list):
-                            pat, holder = pat
-
-                        if isinstance(pat, str):
-                            content = content.replace(pat, holder)
-                        else:
-
-                            def sub(m):
-                                # If capturing groups exist, redact only the first group
-                                try:
-                                    secret = m[1]
-                                except IndexError:
-                                    return holder
-                                return m[0].replace(secret, holder)
-
-                            content = pat.sub(sub, content)
+                    content = redact(content)
 
                     print('\n```')
                     print(content)
