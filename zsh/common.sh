@@ -7,12 +7,14 @@ if in_path gpg-connect-agent; then
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   fi
 
-  if ! [ -v MSYSTEM ] && _krr_tty=$(tty 2>&1); then
+  if ! [ -v MSYSTEM ]; then
     gtty() {
-      export GPG_TTY="$_krr_tty"
-      gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
+      local tty
+      if tty=$(tty 2>&1); then
+        export GPG_TTY="$tty"
+        gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
+      fi
     }
-
     gtty2() {
       gtty
       gpg --clearsign < /dev/null
