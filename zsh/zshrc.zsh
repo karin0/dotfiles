@@ -172,3 +172,5 @@ zinit snippet 'https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/refs/heads/mast
 
 zinit ice depth=1 wait='0' atinit='_post_plugin' silent=1
 zinit snippet OMZ::lib/history.zsh
+
+alias ziu='zinit update --all -p && zinit self-update'
