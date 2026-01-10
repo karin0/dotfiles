@@ -18,7 +18,7 @@ fi
 alias mnt2="$KRR_SUDO"' mount -t ntfs3 -o ro,uid=$UID,gid=$GID'
 alias mnt3="$KRR_SUDO"' mount -t ntfs3 -o rw,uid=$UID,gid=$GID'
 
-alias gc='gtty; git commit'
+alias gc='git commit'
 alias gcm='gc -m'
 alias gcam='gc -am'
 alias gs='git status'
@@ -59,4 +59,17 @@ sva() {
 
 pycclean() {
 	find . -regex '^.*\(__pycache__\|\.py[co]\)$' -o -name .git -prune -name venv -prune -name .vent -prune
+}
+
+gtty() {
+  # Detection is deferred since stdout is redirected during zinit/p10k caching.
+  local tty
+  tty=$(tty) || return $?
+  export GPG_TTY="$tty"
+  gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
+}
+
+gtty2() {
+  gtty
+  gpg --clearsign < /dev/null
 }

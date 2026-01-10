@@ -2,28 +2,8 @@
 
 export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.venv/bin:$HOME/.local/bin:/opt/dotfiles:$PATH"
 
-if in_path gpg-connect-agent; then
-  if [ -v TERMUX_VERSION ]; then
-    export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-  fi
-
-  if ! [ -v MSYSTEM ]; then
-    gtty() {
-      # Detection is deferred since stdout is redirected during zinit/p10k caching.
-      local tty
-      tty=$(tty) || return $?
-      export GPG_TTY="$tty"
-      gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
-    }
-    gtty2() {
-      gtty
-      gpg --clearsign < /dev/null
-    }
-  else
-    gtty() { :; }
-  fi
-else
-  gtty() { :; }
+if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 fi
 
 if in_path nvim; then
