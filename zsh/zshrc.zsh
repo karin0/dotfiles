@@ -3,16 +3,31 @@
 alias in_path='whence -p >/dev/null'
 
 if in_path byobu; then
-  [ ! -v BYOBU_BACKEND ] && [ ! -v TMUX ] && [ -t 0 ] && \
+  if [[ -v BYOBU_BACKEND || -v TMUX ]]; then
+    alias rescue="exec tmux detach -E 'BYOBU_BACKEND= exec zsh'"
+    at() {
+      local this
+      this="$(tmux display -p '#S')" && [[ -n $this ]] || return
+      local args
+      if [[ $# -eq 0 ]]; then
+        local session
+        for session in $(tmux ls -F '#S'); do
+          if [[ $session != $this ]]; then
+            args="$session"
+            break
+          fi
+        done
+        if [[ -z $args ]]; then
+          echo 'No other tmux sessions found.' >&2
+          return 1
+        fi
+      else
+        args="$*"
+      fi
+      tmux detach -E "tmux attach -t $args || read -r; exec tmux attach -t ${(q)this}"
+    }
+  elif (( SHLVL == 1 )) || ( [ -v VSCODE_IPC_HOOK_CLI ] && (( SHLVL == 2 )) ); then
     exec byobu new zsh
-
-  alias rescue="tmux detach -E 'BYOBU_BACKEND= exec zsh'"
-
-  # https://github.com/microsoft/vscode-remote-release/issues/2763#issuecomment-1298256900
-  if in_path code; then
-    vscode_ipc=(/run/user/$UID/vscode-ipc-*.sock(Nom[1]))
-    [[ -n $vscode_ipc ]] && \
-      export VSCODE_IPC_HOOK_CLI=$vscode_ipc
   fi
 fi
 
