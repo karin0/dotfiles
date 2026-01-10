@@ -9,11 +9,11 @@ if in_path gpg-connect-agent; then
 
   if ! [ -v MSYSTEM ]; then
     gtty() {
+      # Detection is deferred since stdout is redirected during zinit/p10k caching.
       local tty
-      if tty=$(tty 2>&1); then
-        export GPG_TTY="$tty"
-        gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
-      fi
+      tty=$(tty) || return $?
+      export GPG_TTY="$tty"
+      gpg-connect-agent UPDATESTARTUPTTY /bye >/dev/null
     }
     gtty2() {
       gtty
