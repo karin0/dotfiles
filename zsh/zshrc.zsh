@@ -2,6 +2,20 @@
 
 alias in_path='whence -p >/dev/null'
 
+if in_path byobu; then
+  [ ! -v BYOBU_BACKEND ] && [ ! -v TMUX ] && [ -t 0 ] && \
+    exec byobu new zsh
+
+  alias rescue="tmux detach -E 'BYOBU_BACKEND= exec zsh'"
+
+  # https://github.com/microsoft/vscode-remote-release/issues/2763#issuecomment-1298256900
+  if in_path code; then
+    vscode_ipc=(/run/user/$UID/vscode-ipc-*.sock(Nom[1]))
+    [[ -n $vscode_ipc ]] && \
+      export VSCODE_IPC_HOOK_CLI=$vscode_ipc
+  fi
+fi
+
 if in_path upower; then
   () {
     local bat="$(upower -e | grep -m 1 BAT)"
@@ -9,6 +23,7 @@ if in_path upower; then
       bat="$(upower -i $bat | grep state: -m 1 | tr -s ' ' | cut -d' ' -f3)"
       if [ "$bat" != charging ] && [ "$bat" != fully-charged ]; then
         echo "\033[0;31m\033[1mBATTERY NOT CHARGING: $bat\033[0m"
+        KRR_RELOAD=1
       fi
     fi
   }
