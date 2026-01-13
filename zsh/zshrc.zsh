@@ -171,7 +171,7 @@ _post_plugin() {
 }
 
 _post_comp() {
-  [ -v $KRR_PKG ] && compdef pac=$KRR_PKG
+  [ -v KRR_PKG ] && compdef pac=$KRR_PKG
 }
 
 zinit wait lucid light-mode for \
