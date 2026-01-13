@@ -63,8 +63,6 @@ fi
 if [ "$MSYSTEM" = MSYS ]; then
   export MSYS=winsymlinks:native
   eval "$(ssh-pageant -r -a \"$temp\ssh-pageant.socket\")" >/dev/null
-  # https://github.com/jeffreytse/zsh-vi-mode/issues/159
-  setopt re_match_pcre
 fi
 
 ### Added by Zinit's installer
@@ -167,6 +165,9 @@ _post_plugin() {
   _bind_term_key kend  end-of-line
   _bind_term_key kdch1 delete-char
   _bind_term_key kich1 overwrite-mode
+
+  # https://github.com/jeffreytse/zsh-vi-mode/issues/159
+  setopt re_match_pcre
 }
 
 _post_comp() {
