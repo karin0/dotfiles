@@ -104,16 +104,37 @@ rationalise-dot() {
   if [[ $LBUFFER =~ '(^|/| |      |'$'\n''|\||;|&)\.\.$' ]]; then
     LBUFFER+=/
     zle self-insert
-    zle self-insert
-  else
-    zle self-insert
   fi
+  zle self-insert
 }
 
+# Ignore Ctrl-C when buffer is empty, like fish
 function _do_intr {
   if [[ -n $BUFFER ]]; then
     zle .send-break
   fi
+}
+
+function _enable_intr {
+  stty intr '^C'
+}
+
+function _disable_intr {
+  stty intr ''
+}
+
+function _bind_all_key() {
+  bindkey -M emacs "$1" "$2"
+  bindkey -M viins "$1" "$2"
+  bindkey -M vicmd "$1" "$2"
+}
+
+zmodload zsh/terminfo
+
+# Fix navigation keys in tmux
+function _bind_term_key() {
+  local seq="${terminfo[$1]}"
+  [[ -n $seq ]] && _bind_all_key "$seq" "$2"
 }
 
 _post_plugin() {
@@ -135,26 +156,17 @@ _post_plugin() {
   bindkey -M isearch . self-insert
 
   zle -N _do_intr
-
-  bindkey '^C' _do_intr
-  for m in emacs viins vicmd; do
-    if bindkey -M $m >/dev/null 2>&1; then
-      bindkey -M $m '^C' _do_intr
-    fi
-  done
-
-  function _enable_intr {
-    stty intr '^C'
-  }
-
-  function _disable_intr {
-    stty intr ''
-  }
+  _bind_all_key '^C' _do_intr
 
   autoload -U add-zsh-hook
   add-zsh-hook preexec _enable_intr
   add-zsh-hook precmd _disable_intr
   _disable_intr
+
+  _bind_term_key khome beginning-of-line
+  _bind_term_key kend  end-of-line
+  _bind_term_key kdch1 delete-char
+  _bind_term_key kich1 overwrite-mode
 }
 
 _post_comp() {
