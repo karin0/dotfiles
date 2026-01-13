@@ -26,7 +26,10 @@ if in_path byobu; then
       fi
       tmux detach -E "tmux attach -t $args || read -r; exec tmux attach -t ${(q)this}"
     }
-  elif (( SHLVL == 1 )) || ( [ -v VSCODE_IPC_HOOK_CLI ] && (( SHLVL == 2 )) ); then
+  elif [ -v VSCODE_IPC_HOOK_CLI ] && ( (( SHLVL == 1 )) || (( SHLVL == 2 )) ); then
+    # https://github.com/microsoft/vscode-remote-release/issues/2763#issuecomment-1298256900
+    exec byobu new -e VSCODE_IPC_HOOK_CLI=$VSCODE_IPC_HOOK_CLI zsh
+  elif (( SHLVL == 1 )); then
     exec byobu new zsh
   fi
 fi
