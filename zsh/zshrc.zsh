@@ -191,9 +191,6 @@ zinit light-mode depth=1 for \
   if'[[ -v TERMUX_VERSION || "$(</proc/$PPID/cmdline)" =~ "terminal|login" ]] 2>/dev/null' \
     chriskempson/base16-shell
 
-in_path kubectl && source <(kubectl completion zsh)
-in_path zoxide && eval "$(zoxide init zsh)"
-
 zinit ice lucid depth=1 has='fzf'
 zinit light Aloxaf/fzf-tab
 
@@ -204,3 +201,6 @@ zinit ice depth=1 wait='0' atinit='_post_plugin' silent=1
 zinit snippet OMZ::lib/history.zsh
 
 alias ziu='zinit update --all -p && zinit self-update'
+
+in_path kubectl && source <(kubectl completion zsh)
+in_path zoxide && eval "$(zoxide init zsh)"
