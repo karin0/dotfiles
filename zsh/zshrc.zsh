@@ -1,5 +1,10 @@
 #!/bin/zsh
 
+if [[ ( -v GNOME_TERMINAL_SCREEN || -v TERMUX_VERSION ) && $SHLVL = 1 && -d ~/tinted-shell ]] ; then
+  # Load the theme before entering tmux
+  zsh ~/tinted-shell/scripts/base16-onedark.sh
+fi
+
 alias in_path='whence -p >/dev/null'
 
 if in_path byobu; then
@@ -188,9 +193,7 @@ zinit light-mode depth=1 for \
   MichaelAquilina/zsh-you-should-use \
   jeffreytse/zsh-vi-mode \
   has'make' as"program" pick"$ZPFX/bin/git-*" src"etc/git-extras-completion.zsh" make"PREFIX=$ZPFX" \
-    tj/git-extras \
-  if'[[ -v TERMUX_VERSION || "$(</proc/$PPID/cmdline)" =~ "terminal|login" ]] 2>/dev/null' \
-    chriskempson/base16-shell
+    tj/git-extras
 
 zinit ice lucid depth=1 has='fzf'
 zinit light Aloxaf/fzf-tab
