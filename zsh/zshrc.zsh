@@ -29,13 +29,22 @@ if in_path byobu; then
       else
         args="$*"
       fi
-      tmux detach -E "tmux attach -t $args || read -r; exec tmux attach -t ${(q)this}"
+      tmux detach -E "tmux attach -t ${(q)args} || read -r; exec tmux attach -t ${(q)this}"
     }
-  elif [ -v VSCODE_IPC_HOOK_CLI ] && ( (( SHLVL == 1 )) || (( SHLVL == 2 )) ); then
+  elif (( SHLVL == 1 )) || ( [ -v VSCODE_IPC_HOOK_CLI ] && (( SHLVL == 2 )) ); then
     # https://github.com/microsoft/vscode-remote-release/issues/2763#issuecomment-1298256900
-    exec byobu new -e VSCODE_IPC_HOOK_CLI=$VSCODE_IPC_HOOK_CLI zsh
-  elif (( SHLVL == 1 )); then
-    exec byobu new zsh
+    () {
+      local file
+      file=$(mktemp) || return 1
+      chmod 600 "$file"
+
+      # Dump the current environment to the source file
+      # Omit default values from `tmux show-options -g update-environment`
+      export -p | grep -vE "^export( -[[:alnum:]]+)? (TMUX|BYOBU|PWD|OLDPWD|SHELL|SHLVL|TERM|DISPLAY|SSH_CONNECTION|WINDOWID|XAUTHORITY)" > "$file"
+
+      # XXX: env file will not be cleaned up if byobu fails to start
+      exec byobu new ". '$file'; rm '$file'; exec $SHELL"
+    }
   fi
 fi
 
