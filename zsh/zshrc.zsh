@@ -74,9 +74,9 @@ else
   unset KRR_RELOAD
 fi
 
-if [ "$MSYSTEM" = MSYS ]; then
+if [ -v MSYSTEM ]; then
   export MSYS=winsymlinks:native
-  eval "$(ssh-pageant -r -a \"$temp\ssh-pageant.socket\")" >/dev/null
+  eval "$(ssh-pageant -ra ~/ssh-pageant.socket)" >/dev/null
 fi
 
 ### Added by Zinit's installer
