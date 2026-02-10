@@ -234,7 +234,7 @@ def update_core(existing_core: str | None = None):
             log.info('Core up to date: %s', file)
             return existing_core
 
-        if (ext == '.zip' or ext == '.gz') and file.startswith(MIHOMO_PREFIX) and os_name in file and arch in file:
+        if file.startswith(MIHOMO_PREFIX) and os_name in file and arch in file:
             url = asset['browser_download_url']
             digest = asset['digest']
             break
@@ -245,6 +245,7 @@ def update_core(existing_core: str | None = None):
     if existing_core:
         log.debug('Updating from %s', existing_core)
 
+    if not (ext == '.zip' or ext == '.gz'):
         raise ValueError(f'Unsupported archive format: {file}')
 
     out_file = (stem + '.exe') if os.name == 'nt' else stem
