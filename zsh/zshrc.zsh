@@ -167,13 +167,16 @@ _post_plugin() {
   bindkey . rationalise-dot
   bindkey -M isearch . self-insert
 
-  zle -N _do_intr
-  _bind_all_key '^C' _do_intr
+  # This somehow does not work in Windows Terminal
+  if ! [ -v WT_SESSION ]; then
+    zle -N _do_intr
+    _bind_all_key '^C' _do_intr
 
-  autoload -U add-zsh-hook
-  add-zsh-hook preexec _enable_intr
-  add-zsh-hook precmd _disable_intr
-  _disable_intr
+    autoload -U add-zsh-hook
+    add-zsh-hook preexec _enable_intr
+    add-zsh-hook precmd _disable_intr
+    _disable_intr
+  fi
 
   _bind_term_key khome beginning-of-line
   _bind_term_key kend  end-of-line
