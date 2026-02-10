@@ -75,7 +75,7 @@ else
 fi
 
 if [ -v MSYSTEM ]; then
-  export MSYS=winsymlinks:native
+  export MSYS=winsymlinks:nativestrict
   eval "$(ssh-pageant -ra ~/ssh-pageant.socket)" >/dev/null
 fi
 
