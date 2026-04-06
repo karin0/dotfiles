@@ -7,7 +7,7 @@ fi
 
 alias in_path='whence -p >/dev/null'
 
-if in_path byobu; then
+if [[ "$TERM_PROGRAM" != "vscode" ]] && in_path byobu; then
   if [[ -v BYOBU_BACKEND || -v TMUX ]]; then
     alias rescue="exec tmux detach -E 'BYOBU_BACKEND= exec zsh'"
     at() {
@@ -220,3 +220,9 @@ alias ziu='zinit update --all -p && zinit self-update'
 
 in_path kubectl && source <(kubectl completion zsh)
 in_path zoxide && eval "$(zoxide init zsh)"
+
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en
+
+[[ $TERM_PROGRAM = vscode ]] && . "$(code --locate-shell-integration-path zsh)"
