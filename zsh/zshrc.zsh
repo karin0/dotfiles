@@ -48,7 +48,7 @@ if [[ "$TERM_PROGRAM" != "vscode" ]] && in_path byobu; then
   fi
 fi
 
-if in_path upower; then
+if false && in_path upower; then
   () {
     local bat="$(upower -e | grep -m 1 BAT)"
     if [ -n "$bat" ]; then
