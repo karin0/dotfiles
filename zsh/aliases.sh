@@ -26,11 +26,11 @@ alias gsw='git switch'
 alias gd='git diff'
 alias ga='git add'
 
-reload() {
+_reload() {
   KRR_RELOAD=1 exec ${1:-zsh}
 }
 
-alias reload='reload "${0#-}"'
+alias reload='_reload "${0#-}"'
 
 pwd() {
 	if [ -n "$1" ] && [[ "$1" != -* ]]; then
