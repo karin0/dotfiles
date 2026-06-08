@@ -81,4 +81,6 @@ if [ "$OSTYPE" = linux-gnu ]; then
 
   in_path cider && alias cider='_chrome_entry cider'
   in_path todoist && alias todoist='_chrome_entry todoist'
+
+  in_path agy-ide && alias code=agy-ide
 fi
