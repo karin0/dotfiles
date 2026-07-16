@@ -1,56 +1,183 @@
 {
-    "workbench.colorTheme": "One Dark Pro",
-    "editor.fontFamily": "'Source Code Pro', 'Source Han Mono', monospace, '思源黑体'",
-    "editor.mouseWheelZoom": true,
-    "editor.wordWrap": "off",
-    "vim.useCtrlKeys": false,
-    "workbench.sideBar.location": "left",
-    "editor.renderWhitespace": "none",
-    "editor.renderControlCharacters": true,
-    "files.autoSave": "onFocusChange",
-    "files.trimTrailingWhitespace": true,
-    "code-runner.saveFileBeforeRun": true,
-    "code-runner.runInTerminal": true,
-    "window.titleBarStyle": "custom",
-    "files.autoGuessEncoding": true,
-    "files.insertFinalNewline": true,
-    "files.trimFinalNewlines": true,
-    "editor.suggestSelection": "first",
-    "telemetry.enableTelemetry": false,
-    "telemetry.enableCrashReporter": false,
-    "code-runner.executorMap": {
-        "cpp": "cd $dir && g++ -DAKARI -I/home/karin0/lark/oi/repo/env -Wall -O0 $fileName -o /tmp/a.out && /tmp/a.out"
+  "__http.proxy": "http://127.0.0.1:10808",
+  "[c]": {
+    "editor.defaultFormatter": "xaver.clang-format"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[python]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
     },
-    "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true,
-    "python.languageServer": "Microsoft",
-    "files.eol": "\n",
-    "[cpp]": {
-        "editor.defaultFormatter": "xaver.clang-format"
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnType": true
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "[markdown]": {
+    "editor.formatOnSave": false
+  },
+  "clang-format.fallbackStyle": "Chromium",
+  "clang-format.style": "Chromium",
+  "claudeCode.preferredLocation": "panel",
+  // "code-runner.executorMap": {
+  //   "cp": "cd $dir && g++ $fileName -DAKARI -Wall -Wextra -Wshadow -O0 -o a.out && echo Compiled && ./a.out"
+  // },
+  // "code-runner.runInTerminal": true,
+  // "code-runner.saveFileBeforeRun": true,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "editor.fontFamily": "'SauceCodePro Nerd Font', 'Source Code Pro', 'Source Han Mono', 'monospace', monospace",
+  "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.largeFileOptimizations": false,
+  "editor.mouseWheelZoom": true,
+  "editor.unicodeHighlight.allowedLocales": {
+    "zh-hans": true,
+    "zh-hant": true
+  },
+  "editor.wordWrap": "on",
+  "explorer.fileNesting.patterns": {
+    "*.db": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.s3db": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.ts": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "Cargo.toml": "Cargo.lock",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "tsconfig.json": "tsconfig.*.json"
+  },
+  "files.autoGuessEncoding": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "git.suggestSmartCommit": false,
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "dotenv": false,
+    "json": false,
+    "objective-c": false
+  },
+  "latex-workshop.latex.autoBuild.run": "never",
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.latex.clean.fileTypes": [
+    "*.aux",
+    "*.bbl",
+    "*.blg",
+    "*.idx",
+    "*.ind",
+    "*.lof",
+    "*.lot",
+    "*.out",
+    "*.toc",
+    "*.acn",
+    "*.acr",
+    "*.alg",
+    "*.glg",
+    "*.glo",
+    "*.gls",
+    "*.ist",
+    "*.fls",
+    "*.log",
+    "*.fdb_latexmk"
+  ],
+  "latex-workshop.latex.recipes": [
+    {
+      "name": "latexmk",
+      "tools": ["latexmk"]
     },
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
+    {
+      "name": "xelatex -> bibtex -> xelatex*2",
+      "tools": ["xelatex", "bibtex", "xelatex", "xelatex"]
     },
-    "http.proxy": "http://127.0.0.1:10808",
-    "markdown.extension.katex.macros": {
-        "\\ds": "\\displaystyle",
-        "\\c": "\\displaystyle\\binom",
-        "\\df": "\\dfrac",
-        "\\rm": "\\mathrm",
-        "\\un": "\\,\\mathrm",
-        "\\u": "\\,\\mathrm",
-        "\\K": "\\un{K}"
+    {
+      "name": "kll remote",
+      "tools": ["builder"]
     },
-    "gitlens.views.formats.commits.description": "${id}, ${authorNotYou, }${agoOrDate}",
-    "gitlens.views.formats.commits.label": "${[tips]  }${message}",
-    "window.zoomLevel": 1,
-    "editor.cursorStyle": "line",
-    "editor.insertSpaces": false,
-    "editor.lineNumbers": "on",
-    "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
-    "notebook.cellToolbarLocation": {
-        "default": "right",
-        "jupyter-notebook": "left"
+    {
+      "name": "xelatex",
+      "tools": ["xelatex"]
     },
-    "diffEditor.ignoreTrimWhitespace": false
+    {
+      "name": "pdflatex -> bibtex -> pdflatex*2",
+      "tools": ["pdflatex", "bibtex", "pdflatex", "pdflatex"]
+    }
+  ],
+  "latex-workshop.latex.tools": [
+    {
+      "args": ["-cr", "kll"],
+      "command": "./build.sh",
+      "name": "builder"
+    },
+    {
+      "args": [
+        "-xelatex",
+        "-f-",
+        "-halt-on-error",
+        "-latexoption=-interaction=batchmode",
+        "%DOCFILE%"
+      ],
+      "command": "latexmk",
+      "name": "latexmk"
+    },
+    {
+      "args": [
+        "-synctex=1",
+        "-interaction=batchmode",
+        "-file-line-error",
+        "-halt-on-error",
+        "%DOCFILE%"
+      ],
+      "command": "xelatex",
+      "name": "xelatex"
+    },
+    {
+      "args": [
+        "-synctex=1",
+        "-interaction=nonstopmode",
+        "-file-line-error",
+        "%DOCFILE%"
+      ],
+      "command": "pdflatex",
+      "name": "pdflatex"
+    },
+    {
+      "args": ["%DOCFILE%"],
+      "command": "bibtex",
+      "name": "bibtex"
+    }
+  ],
+  "latex-workshop.view.pdf.viewer": "tab",
+  "python.analysis.typeCheckingMode": "standard",
+  "python.terminal.activateEnvironment": false,
+  "redhat.telemetry.enabled": false,
+  "remote.autoForwardPorts": false,
+  "remote.downloadExtensionsLocally": true,
+  "remote.SSH.configFile": "~/.ssh/config.inc.stub",
+  "security.workspace.trust.untrustedFiles": "open",
+  "vim.useCtrlKeys": false,
+  "window.titleBarStyle": "custom",
+  "window.zoomLevel": 2,
+  // "editor.renderWhitespace": "boundary",
+  "wordcount_cjk.activateLanguages": ["markdown", "plaintext", "latex", "tex"],
+  "wordcount_cjk.statusBarTextTemplate": "Count: ${cjk}, ${cjk + en_words}",
+  "workbench.colorTheme": "One Dark Pro",
+  "python.languageServer": "Default",
+  "gitlens.ai.model": "vscode",
+  "gitlens.ai.vscode.model": "copilot:gemini-3.1-pro-preview",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
