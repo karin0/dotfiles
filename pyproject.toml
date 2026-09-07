@@ -1,0 +1,54 @@
+[project]
+name = "dotfiles"
+version = "0"
+requires-python = ">=3.14"
+
+[dependency-groups]
+dev = ["pyright", "ruff"]
+
+[tool.uv]
+package = false
+exclude-newer = "15 days"
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["ALL", "ANN401"]
+ignore = [
+    "A", "ANN", "ARG", "COM812", "CPY", "D", "EM", "ERA", "FAST", "FBT", "PLR", "PTH", "TD",
+    "BLE001", "C901", "N818", "PLC0415", "PLW1508", "PLW2901", "RET503", "S101", "SLF001",
+    "TC001", "TC002", "TC003", "TC006", "TRY003", "TRY004",
+    # A tree of standalone scripts: none of them is a module of an importable package, and the
+    # terminal is what they exist to write to.
+    "INP001", "T20",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"*_test.py" = ["ANN201", "B018", "PLW0108", "PT018", "SIM105",
+               # Fixtures stand in for credentials, which is what makes them fixtures.
+               "S105", "S106",
+               # A test runs the tree's own scripts, on an argv it builds itself.
+               "S603"]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"__future__.annotations".msg = "PEP 649 lazy annotations are the 3.14 default"
+
+[tool.ruff.lint.flake8-quotes]
+docstring-quotes = "single"
+inline-quotes = "single"
+multiline-quotes = "single"
+
+[tool.ruff.lint.isort]
+lines-between-types = 1
+
+[tool.ruff.format]
+quote-style = "preserve"
+
+[tool.pyright]
+# The rest of the tree predates the annotations strict mode asks for, so it is checked by ruff
+# alone until a file is next worked on.
+include = ["bin/redact.py", "bin/redact_test.py"]
+typeCheckingMode = "strict"
+pythonVersion = "3.14"
