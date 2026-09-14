@@ -225,6 +225,7 @@ alias ziu='zinit update --all -p && zinit self-update'
 
 in_path kubectl && source <(kubectl completion zsh)
 in_path zoxide && eval "$(zoxide init zsh)"
+in_path direnv && eval "$(direnv hook zsh)"
 
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
