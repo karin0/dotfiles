@@ -24,7 +24,7 @@ if in_path pacman; then
     alias paclean="yes | $KRR_SUDO pacman -Scc"
   fi
   alias add="$KRR_SUDO pacman -S --needed"
-  alias autoremove="$KRR_SUDO pacman -Rs \$(pacman -Qdtq)"
+  alias autoremove=_pacman_autoremove
 elif in_path apt; then
   KRR_PKG=apt
   KRR_SYU="$KRR_SUDO apt update && $KRR_SUDO apt upgrade && $KRR_SUDO apt autoremove --purge"
