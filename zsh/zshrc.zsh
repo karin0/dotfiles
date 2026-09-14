@@ -231,7 +231,6 @@ in_path zoxide && eval "$(zoxide init zsh)"
 in_path direnv && eval "$(direnv hook zsh)"
 
 export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
 export LANGUAGE=en
 
 [[ $TERM_PROGRAM = vscode ]] && . "$(code --locate-shell-integration-path zsh)"

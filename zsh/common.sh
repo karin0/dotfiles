@@ -14,12 +14,6 @@ elif in_path vi; then
   export VISUAL=vi EDITOR=vi
 fi
 
-# No CJK in Linux console
-if [ "$TERM" != linux ]; then
-  export LANG=zh_CN.UTF-8
-  export LANGUAGE=zh_CN:zh_TW:en_US
-fi
-
 # Allow overridden by environment
 # if [ ! -v KRR_PROXY ]; then
 #   export KRR_PROXY=http://127.0.0.1:10807
