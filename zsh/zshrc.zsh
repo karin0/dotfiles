@@ -7,7 +7,7 @@ fi
 
 alias in_path='whence -p >/dev/null'
 
-if [[ "$TERM_PROGRAM" != "vscode" ]] && in_path byobu; then
+if in_path byobu; then
   if [[ -v BYOBU_BACKEND || -v TMUX ]]; then
     alias rescue="exec tmux detach -E 'BYOBU_BACKEND= exec zsh'"
     at() {
