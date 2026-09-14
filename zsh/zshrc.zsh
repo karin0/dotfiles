@@ -233,4 +233,4 @@ in_path direnv && eval "$(direnv hook zsh)"
 export LANG=en_US.UTF-8
 export LANGUAGE=en
 
-[[ $TERM_PROGRAM = vscode ]] && . "$(code --locate-shell-integration-path zsh)"
+[[ $TERM_PROGRAM = vscode ]] && . "$(command code --locate-shell-integration-path zsh)"
