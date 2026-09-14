@@ -2,7 +2,7 @@
 
 if [[ $GIT_MERGE_AUTOEDIT = no && $GIT_PAGER = cat || -v VSCODE_PREVENT_SHELL_HISTORY ]]; then
   # Let AI agents use bash instead.
-  exec bash "$@"
+  exec bash
 fi
 
 if [[ ( -v GNOME_TERMINAL_SCREEN || -v TERMUX_VERSION ) && $SHLVL = 1 && -d ~/tinted-shell ]] ; then
