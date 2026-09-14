@@ -40,14 +40,14 @@ if [[ "$TERM_PROGRAM" != "vscode" ]] && in_path byobu; then
     # https://github.com/microsoft/vscode-remote-release/issues/2763#issuecomment-1298256900
     () {
       local file
-      file=$(mktemp) || return 1
+      file=$(mktemp -p "${XDG_RUNTIME_DIR:-/tmp}") || return 1
       chmod 600 "$file"
 
       # Dump the current environment to the source file
       # Omit default values from `tmux show-options -g update-environment`
       export -p | grep -vE "^export( -[[:alnum:]]+)? (TMUX|BYOBU|PWD|OLDPWD|SHELL|SHLVL|TERM|DISPLAY|SSH_CONNECTION|WINDOWID|XAUTHORITY)" > "$file"
 
-      # XXX: env file will not be cleaned up if byobu fails to start
+      # Should byobu fail to start, the dump survives in XDG_RUNTIME_DIR until logout
       exec byobu new ". '$file'; rm '$file'; exec $SHELL"
     }
   fi
