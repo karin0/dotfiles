@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.venv/bin:$HOME/.local/bin:/opt/dotfiles:$PATH"
+export PATH="$HOME/bin:$HOME/lark/bin:$HOME/dotsecrets/bin:$HOME/dotfiles/bin:$HOME/.cargo/bin:$HOME/.venv/bin:$HOME/.local/bin:$PATH"
 
 if [ -v TERMUX_VERSION ] && in_path gpg-connect-agent; then
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
