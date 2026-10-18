@@ -204,6 +204,7 @@ def main():
 
             for pattern in omit_patterns:
                 if path.match(pattern):
+                    print('Omitting', path, 'by', pattern, file=sys.stderr)
                     return (None, 'omitted')
 
             return False
@@ -211,9 +212,8 @@ def main():
         for file in files:
             path = PurePath(file)
             if (content := excluded(path)) is True:
-                if file != arg:
-                    continue
-            elif content:
+                continue
+            if content:
                 items = ((path, content),)
             else:
                 if skip:
