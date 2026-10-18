@@ -31,6 +31,8 @@ ignore = [
                "S105", "S106",
                # A test runs the tree's own scripts, on an argv it builds itself.
                "S603"]
+# The script exists to drive the uv on PATH, with arguments that are literals or uv's own output.
+"bin/uv_python_upgrade.py" = ["S603", "S607"]
 
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "__future__.annotations".msg = "PEP 649 lazy annotations are the 3.14 default"
@@ -49,6 +51,9 @@ quote-style = "preserve"
 [tool.pyright]
 # The rest of the tree predates the annotations strict mode asks for, so it is checked by ruff
 # alone until a file is next worked on.
-include = ["bin/redact.py", "bin/redact_test.py"]
+include = [
+    "bin/redact.py", "bin/redact_test.py", "bin/uv_python_upgrade.py",
+    "bin/uv_python_upgrade_test.py",
+]
 typeCheckingMode = "strict"
 pythonVersion = "3.14"
