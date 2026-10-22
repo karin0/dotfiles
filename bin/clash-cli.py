@@ -33,6 +33,8 @@ CLASH_CONFIG_FILE = 'config.yaml'
 MIHOMO_PREFIX = 'mihomo'
 RELEASES_URL = 'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest'
 
+HTTP_TIMEOUT = 30
+
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) Clash.Meta/1 clash-cli/0'
 }
@@ -103,7 +105,7 @@ def load_remote(url: str) -> str:
     log.info('Fetching subscription from %s', url)
 
     try:
-        with urlopen(Request(url, headers=HEADERS)) as f:
+        with urlopen(Request(url, headers=HEADERS), timeout=HTTP_TIMEOUT) as f:
             sub = f.read().decode('utf-8')
         log.debug('Retrieved %d bytes', len(sub))
 
@@ -197,7 +199,7 @@ def update_core(existing_core: str | None = None):
     log.info('Downloading latest Mihomo core...')
 
     # Get the latest release
-    with urlopen(Request(RELEASES_URL, headers=HEADERS)) as f:
+    with urlopen(Request(RELEASES_URL, headers=HEADERS), timeout=HTTP_TIMEOUT) as f:
         data = f.read()
 
     with open(RELEASE_FILE, 'wb') as fp:
@@ -251,7 +253,7 @@ def update_core(existing_core: str | None = None):
     out_file = (stem + '.exe') if os.name == 'nt' else stem
     log.info('Downloading: %s', file)
 
-    with urlopen(Request(url, headers=HEADERS)) as f:
+    with urlopen(Request(url, headers=HEADERS), timeout=HTTP_TIMEOUT) as f:
         data = f.read()
 
     log.debug('Downloaded %d bytes', len(data))
@@ -346,7 +348,7 @@ def prepare_ui(cfg: dict[str, str], root: str):
 
 def download_ui(url: str, dir_path: str):
     log.info('Downloading UI from %s', url)
-    with urlopen(Request(url, headers=HEADERS)) as fp:
+    with urlopen(Request(url, headers=HEADERS), timeout=HTTP_TIMEOUT) as fp:
         data = fp.read()
 
     log.debug('Downloaded %d bytes', len(data))
