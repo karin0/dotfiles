@@ -12,9 +12,3 @@ if in_path byobu; then
   mkdir -p ~/.byobu
   add home/.byobu/.tmux.conf ~/.byobu/.tmux.conf
 fi
-
-if [ -f ~/dotsecrets/install.sh ]; then
-  HERE=~/dotsecrets
-  cd "$HERE"
-  . ./install.sh
-fi
