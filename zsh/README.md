@@ -1,7 +1,8 @@
 ## Usage
 
 ```
-ln -s ~/dotfiles/zsh/.zshrc ~/.zshrc
+ln -s ~/dotfiles/zsh/zshrc.zsh ~/.zshrc
+ln -s ~/dotfiles/zsh/zshenv.zsh ~/.zshenv
 zsh  # maybe with proxychains4
 ```
 

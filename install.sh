@@ -4,7 +4,7 @@ HERE="$(dirname "$(realpath "$0")")"
 cd "$HERE"
 . ./utils.bash
 
-in_path zsh && add zsh/zshrc.zsh ~/.zshrc
+in_path zsh && add zsh/zshrc.zsh ~/.zshrc && add zsh/zshenv.zsh ~/.zshenv
 in_path vim && add home/.vimrc ~/.vimrc
 in_path termux-wake-lock && add home/.termux ~/.termux
 
