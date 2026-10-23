@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-import os
-import sys
 import configparser
+import os
 import subprocess
+import sys
 
 import openai
 
@@ -11,18 +11,9 @@ CONFIG_FILE = os.path.expanduser('~/.krrc')
 
 
 def get_diff():
-    try:
-        opt = sys.argv[1]
-    except IndexError:
-        opt = None
-
-    opts = [None, '--cached', 'HEAD', 'HEAD~']
-    try:
-        opts.remove(opt)
-    except ValueError:
-        pass
-
-    for opt in (opt, *opts):
+    first = sys.argv[1] if len(sys.argv) > 1 else None
+    rest = (opt for opt in (None, '--cached', 'HEAD', 'HEAD~') if opt != first)
+    for opt in (first, *rest):
         cmd = ['git', 'diff']
         if opt:
             cmd.append(opt)
@@ -34,11 +25,10 @@ def get_diff():
 
 def main():
     if not os.path.isfile(CONFIG_FILE):
-        with open(CONFIG_FILE, "w", encoding='utf-8') as fp:
+        with open(CONFIG_FILE, 'w', encoding='utf-8') as fp:
             fp.write('[openai]\nsecret_key=\n')
 
-        print('OpenAI API config file created at',
-              CONFIG_FILE, file=sys.stderr)
+        print('OpenAI API config file created at', CONFIG_FILE, file=sys.stderr)
         sys.exit(1)
 
     config = configparser.ConfigParser()
@@ -69,15 +59,22 @@ def main():
 
     if long:
         messages = [
-            {'role': 'system', 'content': 'You are a helpful assistant writing git commit messages.'},
-            {'role': 'user', 'content': diff +
-                f'\n\nWrite a short commit message and some decriptions{lang}.'},
+            {
+                'role': 'system',
+                'content': 'You are a helpful assistant writing git commit messages.',
+            },
+            {
+                'role': 'user',
+                'content': diff + f'\n\nWrite a short commit message and some decriptions{lang}.',
+            },
         ]
     else:
         messages = [
-            {'role': 'system', 'content': 'You are a helpful assistant writing short git commit messages.'},
-            {'role': 'user', 'content': diff +
-                f'\n\nWrite a short commit message{lang}.'},
+            {
+                'role': 'system',
+                'content': 'You are a helpful assistant writing short git commit messages.',
+            },
+            {'role': 'user', 'content': diff + f'\n\nWrite a short commit message{lang}.'},
         ]
 
     response = openai.ChatCompletion.create(

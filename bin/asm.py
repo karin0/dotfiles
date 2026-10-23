@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
-import sys
 import glob
 import os
 import re
+import sys
+
+from collections.abc import Callable, Iterable
 from pathlib import PurePath
-from typing import Callable, Iterable
 
 try:
     from redact import redact
 except ImportError:
     print('redact.py is unavailable, redaction will be disabled', file=sys.stderr)
-    redact = lambda content: content
+
+    def redact(content: str) -> str:
+        return content
+
 
 c_ext = frozenset(
     (
@@ -59,16 +63,12 @@ not_nt = os.name != 'nt'
 
 
 def filter_block_comments(content, ext):
-    """Filter out block comments based on file extension"""
+    '''Filter out block comments based on file extension'''
     if ext in ('.py', '.pyx', '.pyi'):
-        # Python triple quotes - only match when they start and end at line boundaries with only whitespace
-        # Match """ or ''' that start at beginning of line (with optional whitespace) and end similarly
-        content = re.sub(
-            r'^\s*""".*?^\s*"""\s*$', '', content, flags=re.DOTALL | re.MULTILINE
-        )
-        content = re.sub(
-            r"^\s*'''.*?^\s*'''\s*$", '', content, flags=re.DOTALL | re.MULTILINE
-        )
+        # Python triple quotes, matched only when each quote stands alone on its line apart from
+        # whitespace
+        content = re.sub(r'^\s*""".*?^\s*"""\s*$', '', content, flags=re.DOTALL | re.MULTILINE)
+        content = re.sub(r"^\s*'''.*?^\s*'''\s*$", '', content, flags=re.DOTALL | re.MULTILINE)
     elif ext in c_ext:
         # C-style block comments
         content = re.sub(r'/\*.*?\*/', '', content, flags=re.DOTALL)
@@ -125,7 +125,7 @@ def walk_dir(
 
     for dir, content in dirs:
         if content:
-            yield dir, content + ('directory',)
+            yield dir, (*content, 'directory')
         else:
             yield from walk_dir(dir, excluded)
 
@@ -154,6 +154,26 @@ def main():
     keep_comments = True
     dedup = None
     first = True
+
+    def excluded(path: PurePath) -> bool | Content:
+        if dedup is not None and path in dedup:
+            print('Deduplicated', path, file=sys.stderr)
+            return True
+
+        for pattern in exclude_patterns:
+            if path.match(pattern) or path.is_relative_to(pattern):
+                return True
+
+        if dedup is not None:
+            dedup.add(path)
+
+        for pattern in omit_patterns:
+            if path.match(pattern):
+                print('Omitting', path, 'by', pattern, file=sys.stderr)
+                return (None, 'omitted')
+
+        return False
+
     for arg in args:
         cont = True
 
@@ -188,26 +208,6 @@ def main():
         files = glob.glob(arg, recursive=True)
         if not files:
             raise FileNotFoundError(arg)
-
-        def excluded(path: PurePath) -> bool | Content:
-            if dedup is not None:
-                if path in dedup:
-                    print('Deduplicated', path, file=sys.stderr)
-                    return True
-
-            for pattern in exclude_patterns:
-                if path.match(pattern) or path.is_relative_to(pattern):
-                    return True
-
-            if dedup is not None:
-                dedup.add(path)
-
-            for pattern in omit_patterns:
-                if path.match(pattern):
-                    print('Omitting', path, 'by', pattern, file=sys.stderr)
-                    return (None, 'omitted')
-
-            return False
 
         for file in files:
             path = PurePath(file)

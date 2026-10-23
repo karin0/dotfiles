@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 
-import sys
 import argparse
-import os
-import traceback
-import json
-import platform
-import hashlib
-import subprocess
 import gzip
-import shutil
-import secrets
+import hashlib
+import json
 import logging
+import os
+import platform
+import secrets
+import shutil
+import subprocess
+import sys
+import traceback
 
+from collections.abc import Iterable
+from contextlib import suppress
 from io import BytesIO
+from typing import TextIO
+from urllib.request import Request, urlopen
 from zipfile import ZipFile
-from typing import TextIO, Iterable
-from urllib.request import urlopen, Request
 
 OVERLAY_DIR = 'overlay'
 RELEASE_FILE = 'release.json'
@@ -25,9 +27,7 @@ REMOTE_PROFILE_FILE = 'remote.yaml'
 
 CLASH_DATA_DIR = 'data'
 CLASH_DEFAULT_UI_DIR = 'ui'
-CLASH_DEFAULT_UI_URL = (
-    'https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip'
-)
+CLASH_DEFAULT_UI_URL = 'https://github.com/MetaCubeX/metacubexd/archive/refs/heads/gh-pages.zip'
 CLASH_CONFIG_FILE = 'config.yaml'
 
 MIHOMO_PREFIX = 'mihomo'
@@ -35,14 +35,10 @@ RELEASES_URL = 'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest'
 
 HTTP_TIMEOUT = 30
 
-HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) Clash.Meta/1 clash-cli/0'
-}
+HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) Clash.Meta/1 clash-cli/0'}
 
 parser = argparse.ArgumentParser()
-parser.add_argument(
-    '-o', '--output-file', type=argparse.FileType('w', encoding='utf-8')
-)
+parser.add_argument('-o', '--output-file', type=argparse.FileType('w', encoding='utf-8'))
 parser.add_argument('-u', '--update', action='store_true', help='Update UI and core')
 parser.add_argument(
     '-e',
@@ -92,8 +88,7 @@ def load_remote_cache(url: str) -> str:
             header = f.readline().strip()
             if header == f'# {url}':
                 return f.read()
-            else:
-                log.warning('Profile mismatch: %s', header)
+            log.warning('Profile mismatch: %s', header)
     except FileNotFoundError:
         pass
 
@@ -114,7 +109,7 @@ def load_remote(url: str) -> str:
             f.write(sub)
     except Exception as e:
         if sub := load_remote_cache(url):
-            log.exception('Failed to fetch subscription: %s', e)
+            log.exception('Failed to fetch subscription')
         else:
             raise RuntimeError('Failed to fetch subscription') from e
 
@@ -124,16 +119,12 @@ def load_remote(url: str) -> str:
 def get_cfg(out: TextIO, default_ui: str | None) -> dict[str, str]:
     def load_overlay(cfg: dict, file: str):
         with open(file, encoding='utf-8') as f:
-            for k, v in iter_yaml(f):
-                if k:
-                    cfg[k] = v
+            cfg.update((k, v) for k, v in iter_yaml(f) if k)
 
     preset = {}
 
-    try:
+    with suppress(FileNotFoundError):
         load_overlay(preset, LOCAL_PROFILE_FILE)
-    except FileNotFoundError:
-        pass
 
     overlay = {}
     try:
@@ -147,9 +138,7 @@ def get_cfg(out: TextIO, default_ui: str | None) -> dict[str, str]:
                 log.info('Applying overlay: %s', file)
                 load_overlay(overlay, f'{OVERLAY_DIR}/{file}')
 
-    profile = overlay.pop('cli-profile', None) or preset.pop(
-        'cli-profile', LOCAL_PROFILE_FILE
-    )
+    profile = overlay.pop('cli-profile', None) or preset.pop('cli-profile', LOCAL_PROFILE_FILE)
     if profile == LOCAL_PROFILE_FILE:
         # LOCAL_PROFILE_FILE is the profile, rather than an overlay.
         preset = overlay
@@ -160,14 +149,13 @@ def get_cfg(out: TextIO, default_ui: str | None) -> dict[str, str]:
 
     log.info('Using profile: %s', profile)
 
-    if profile.startswith('https://') or profile.startswith('http://'):
+    if profile.startswith(('https://', 'http://')):
         sub = load_remote(profile)
     else:
         with open(profile, encoding='utf-8') as fp:
             sub = fp.read()
 
-    for k, v in preset.items():
-        out.write(f'{k}: {v}\n')
+    out.writelines(f'{k}: {v}\n' for k, v in preset.items())
     out.write('\n')
 
     if sub:
@@ -194,7 +182,7 @@ def get_cfg(out: TextIO, default_ui: str | None) -> dict[str, str]:
 
 
 def update_core(existing_core: str | None = None):
-    """Download the latest Mihomo core from GitHub releases."""
+    '''Download the latest Mihomo core from GitHub releases.'''
 
     log.info('Downloading latest Mihomo core...')
 
@@ -268,7 +256,7 @@ def update_core(existing_core: str | None = None):
             log.debug('sha256: %s', checksum)
         else:
             log.error('Checksum mismatch! %s != %s', sha256.hexdigest(), checksum)
-            return
+            return None
 
     if ext == '.zip':
         with ZipFile(BytesIO(data)) as zf:
@@ -318,11 +306,9 @@ def find_core():
         try:
             core = update_core(core)
         except Exception as e:
-            if core:
-                log.exception('Failed to update core: %s', e)
-            else:
-                log.error('Failed to update core: %s', e)
+            if not core:
                 raise RuntimeError('No core available') from e
+            log.exception('Failed to update core')
 
     log.info('Using core: %s', core)
     return './' + core
@@ -342,8 +328,8 @@ def prepare_ui(cfg: dict[str, str], root: str):
 
     try:
         download_ui(url, os.path.join(root, dir_name))
-    except Exception as e:
-        log.exception('Failed to download UI: %s', e)
+    except Exception:
+        log.exception('Failed to download UI')
 
 
 def download_ui(url: str, dir_path: str):
@@ -388,8 +374,8 @@ def nt_escalate():
         if ctypes.windll.shell32.IsUserAnAdmin():
             return
         log.info('Not admin, escalating ...')
-    except RuntimeError as e:
-        log.error('IsUserAnAdmin: %s', e)
+    except RuntimeError:
+        log.exception('IsUserAnAdmin failed')
 
     if not args.interactive:
         sys.argv.append('-i')
@@ -451,7 +437,7 @@ if __name__ == '__main__':
     if args.interactive:
         try:
             main()
-        except BaseException as e:
+        except BaseException:
             # Catch Ctrl-C to preserve logs in separate (escalated) window
             traceback.print_exc()
         finally:
