@@ -26,6 +26,10 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
+# These scripts download from the URLs their user configures, mark the downloaded core
+# executable, and run commands whose argv they build themselves.
+"bin/clash-cli.py" = ["S103", "S310", "S603", "S606"]
+"bin/git-msg.py" = ["S603"]
 "*_test.py" = ["ANN201", "B018", "PLW0108", "PT018", "SIM105",
                # Fixtures stand in for credentials, which is what makes them fixtures.
                "S105", "S106",
