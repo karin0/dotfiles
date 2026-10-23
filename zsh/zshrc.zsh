@@ -105,8 +105,6 @@ ZINIT[COMPINIT_OPTS]=-C
 
 HERE="$HOME"/dotfiles/zsh
 
-# common.sh prepends to PATH in every nested shell
-typeset -U path PATH
 . "$HERE"/common.sh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
