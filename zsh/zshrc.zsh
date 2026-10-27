@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-if [[ ( -v GNOME_TERMINAL_SCREEN || -v TERMUX_VERSION ) && $SHLVL = 1 && -d ~/tinted-shell ]] ; then
+if [[ -v GNOME_TERMINAL_SCREEN && $SHLVL = 1 && -d ~/tinted-shell ]] ; then
   # Load the theme before entering tmux
   zsh ~/tinted-shell/scripts/base16-onedark.sh
 fi
