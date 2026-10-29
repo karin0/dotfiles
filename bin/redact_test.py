@@ -1,5 +1,5 @@
 '''Checks for the substitution engine in redact.py: which part of a match is replaced, what a
-placeholder promises, and the hook payload. Run with python3 redact_test.py.'''
+placeholder promises, and the hook payload.'''
 
 import json
 import subprocess
@@ -120,10 +120,3 @@ def test_hook_payload() -> None:
 
     payload['tool_response'] = {'stdout': 'nothing here', 'stderr': ''}
     assert run() == ''
-
-
-if __name__ == '__main__':
-    tests = [v for k, v in sorted(globals().items()) if k.startswith('test_')]
-    for test in tests:
-        test()
-    print(f'{len(tests)} passed')
