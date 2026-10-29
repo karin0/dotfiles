@@ -34,6 +34,9 @@ ignore = [
 # executable, and run commands whose argv they build themselves.
 "bin/clash-cli.py" = ["S103", "S310", "S603", "S606"]
 "bin/git-msg.py" = ["S603"]
+# The script exists to drive the uv and systemctl on PATH, with arguments that are literals or
+# uv's own output.
+"bin/uv_python_upgrade.py" = ["S603", "S607"]
 "*_test.py" = ["ANN201", "B018", "PLW0108", "PT018", "SIM105",
                # Fixtures stand in for credentials, which is what makes them fixtures.
                "S105", "S106",
@@ -59,6 +62,7 @@ quote-style = "preserve"
 # alone until a file is next worked on.
 include = [
     "bin/redact.py", "bin/redact_test.py",
+    "bin/uv_python_upgrade.py", "bin/uv_python_upgrade_test.py",
 ]
 typeCheckingMode = "strict"
 pythonVersion = "3.14"
