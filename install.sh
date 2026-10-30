@@ -12,6 +12,10 @@ if in_path termux-wake-lock; then
   for f in home/.termux/*; do
     add "$f" ~/.termux
   done
+  # Termux ignores a termux.properties that is a symlink, so the link is its parent directory at
+  # the secondary location.
+  mkdir -p ~/.config
+  add home/.config/termux ~/.config/termux
 fi
 
 if in_path byobu; then
