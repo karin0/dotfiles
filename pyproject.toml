@@ -30,10 +30,9 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-# These scripts download from the URLs their user configures, mark the downloaded core
-# executable, and run commands whose argv they build themselves.
+# This script downloads from the URLs its user configures, marks the downloaded core
+# executable, and runs commands whose argv it builds itself.
 "bin/clash-cli.py" = ["S103", "S310", "S603", "S606"]
-"bin/git-msg.py" = ["S603"]
 # The script exists to drive the uv and systemctl on PATH, with arguments that are literals or
 # uv's own output.
 "bin/uv_python_upgrade.py" = ["S603", "S607"]
