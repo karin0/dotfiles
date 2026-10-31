@@ -7,3 +7,5 @@ core.excludesfile=~/.gitignore
 pull.rebase=false
 pull.ff=only
 fetch.prune=true
+hook.kairn.command=kairn seal a8Npyd_2RcCJ5YaBnT2UJXTVjfEu41rdjjEBxfDUU1g
+hook.kairn.event=commit-msg
