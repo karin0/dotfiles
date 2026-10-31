@@ -1,0 +1,4 @@
+#!/bin/sh
+# Git that signs with the GPG key, for commits made by hand. The SSH key in gitconfig stays the
+# default for the commits that programs make.
+exec git -c gpg.format=openpgp -c user.signingkey=D41CC7D7356FCD7B "$@"
