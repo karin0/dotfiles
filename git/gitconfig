@@ -12,3 +12,7 @@ hook.kairn.event=commit-msg
 alias.fix=!git-fix.sh
 alias.rb=rebase --autosquash --autostash --committer-date-is-author-date -S
 alias.tidy=!git-clean.sh
+gpg.format=ssh
+gpg.ssh.allowedsignersfile=~/dotfiles/git/allowed_signers
+user.signingkey=~/.ssh/id_ed25519_signing.pub
+commit.gpgsign=true
