@@ -121,7 +121,7 @@ autocmd FileType cpp nmap <c-F7> :vsp term://g++ % -Og -g -DAKARI -Wall -Wshadow
 " nmap <F8> ggVG"+y
 nmap <F8> ggvGy
 
-map <F9> <ESC>:0read ~/lark/oi/codes/io.cpp<CR>GO
+" map <F9> <ESC>:0read ~/lark/oi/codes/io.cpp<CR>GO
 
 autocmd BufWinEnter,WinEnter term://* startinsert
 autocmd BufLeave term://* stopinsert
