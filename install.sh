@@ -16,6 +16,8 @@ if in_path termux-wake-lock; then
   # the secondary location.
   mkdir -p ~/.config
   add home/.config/termux ~/.config/termux
+  install -d -m 700 ~/.gnupg
+  add home/.gnupg/gpg-agent.conf ~/.gnupg
 fi
 
 if in_path byobu; then

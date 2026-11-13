@@ -1,0 +1,60 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# A pinentry for gpg-agent that asks through the dialogs of Termux:API, so a request
+# from a forwarded agent shows up on the phone while Termux runs in the background.
+set -euo pipefail
+
+encode() {
+  local s=${1//%/%25}
+  s=${s//$'\r'/%0D}
+  printf '%s' "${s//$'\n'/%0A}"
+}
+
+# termux-dialog reads stdin, which carries the Assuan stream. A timeout of 0 waits forever.
+ask() {
+  timeout "$timeout" termux-dialog "$@" -t "${error:-$desc}" < /dev/null
+}
+
+cancelled='ERR 83886179 Operation cancelled <Pinentry>'
+desc='' prompt='' error='' timeout=0
+echo 'OK Pleased to meet you'
+while IFS= read -r line; do
+  cmd=${line%% *}
+  arg=${line#"$cmd"}
+  arg=${arg# }
+  arg=${arg//\\/\\\\}
+  printf -v arg '%b' "${arg//%/\\x}"
+  case $cmd in
+    SETDESC) desc=$arg ;;
+    SETPROMPT) prompt=$arg ;;
+    SETERROR) error=$arg ;;
+    SETTIMEOUT) timeout=$arg ;;
+    GETPIN)
+      # shellcheck disable=SC2218 # ShellCheck 0.11 misreports ask, which is defined above the loop.
+      reply=$(ask text -p -i "$prompt")
+      error=''
+      if [[ $(jq -r .code <<< "$reply") != -1 ]]; then
+        echo "$cancelled"
+        continue
+      fi
+      echo "D $(encode "$(jq -r .text <<< "$reply")")"
+      ;;
+    CONFIRM | MESSAGE)
+      reply=$(ask confirm)
+      error=''
+      if [[ $cmd == CONFIRM && $(jq -r .text <<< "$reply") != yes ]]; then
+        echo "$cancelled"
+        continue
+      fi
+      ;;
+    GETINFO)
+      if [[ $arg == pid ]]; then
+        echo "D $$"
+      fi
+      ;;
+    BYE)
+      echo OK
+      exit
+      ;;
+  esac
+  echo OK
+done
